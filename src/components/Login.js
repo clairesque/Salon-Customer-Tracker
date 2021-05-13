@@ -15,7 +15,7 @@ import { useHistory } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
   login: {
     display: 'flex',
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(12),
     ['@media (min-height:800px)']: {
       marginTop: theme.spacing(23),
     },
