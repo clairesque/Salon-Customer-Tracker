@@ -5,6 +5,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import Login from './components/Login'
+import AdminHome from './components/AdminHome'
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -32,6 +33,7 @@ function App() {
       <Router>
         <div>
           <Route exact path='/' component={Login} />
+          <Route exact path='/admin' component={AdminHome} />
         </div>
       </Router>
     </ThemeProvider>
