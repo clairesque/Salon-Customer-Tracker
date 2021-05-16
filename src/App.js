@@ -6,6 +6,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import Login from './components/Login'
 import AdminHome from './components/AdminHome'
+import Homepage from './components/Homepage'
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -13,15 +14,15 @@ function App() {
     () =>
       createMuiTheme({
         typography: {
-            fontWeight: 400,       
-            letterSpacing: 1,     
-            textTransform: 'none',
+          fontWeight: 400,
+          letterSpacing: 1,
+          textTransform: 'none',
           button: {
-            fontWeight: 400,       
-            letterSpacing: 1,     
+            fontWeight: 400,
+            letterSpacing: 1,
             textTransform: 'none',
           },
-        },      
+        },
         palette: {
           type: prefersDarkMode ? 'dark' : 'light',
         },
@@ -34,6 +35,7 @@ function App() {
         <div>
           <Route exact path='/' component={Login} />
           <Route exact path='/admin' component={AdminHome} />
+          <Route exact path='/home' component={Homepage} />
         </div>
       </Router>
     </ThemeProvider>
