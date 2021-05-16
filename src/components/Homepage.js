@@ -9,7 +9,7 @@ export default function Homepage() {
       <Typography color='textSecondary' gutterBottom>
         Choose Options
       </Typography>
-      <Card />
+      <Card name='Haircut' />
     </Container>
   )
 }
