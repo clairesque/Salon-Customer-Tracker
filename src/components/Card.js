@@ -30,16 +30,16 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3),
   },
 }))
-
-function ItemCard() {
+function ItemCard(props) {
+  var propsName = props.name
   const [state, setState] = React.useState({
-    haircut: false,
+    checkVal: false,
   })
-  var { haircut } = state
+  var { checkVal } = state
 
   const handleChange = () => {
-    setState({ ...state, haircut: !haircut })
-    console.log(haircut)
+    setState({ ...state, checkVal: !checkVal })
+    console.log(checkVal)
   }
 
   const classes = useStyles()
@@ -55,13 +55,13 @@ function ItemCard() {
                   control={
                     <Checkbox
                       className='checkbox'
-                      checked={haircut}
-                      onClick={handleChange}
-                      name='haircut'
+                      checked={checkVal}
+                      onChange={handleChange}
+                      name={propsName}
                     />
                   }
-                  label='Haircut'
                 />
+                {propsName}
               </CardContent>
             </FormGroup>
           </FormControl>
