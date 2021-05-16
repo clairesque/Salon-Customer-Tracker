@@ -5,6 +5,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import Login from './components/Login'
+import AdminHome from './components/AdminHome'
 import Homepage from './components/Homepage'
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
       <Router>
         <div>
           <Route exact path='/' component={Login} />
+          <Route exact path='/admin' component={AdminHome} />
           <Route exact path='/home' component={Homepage} />
         </div>
       </Router>
