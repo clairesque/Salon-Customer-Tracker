@@ -31,7 +31,7 @@ const AdminHome = (props) => {
   const { currentUser } = useContext(AuthContext)
 
   useEffect(() => {
-    const apiUrl = `https://saloontracker.herokuapp.com/collection/Customers`
+    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers`
     fetch(apiUrl)
       .then((res) => res.json())
       .then((orders) => {
