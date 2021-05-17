@@ -8,7 +8,6 @@ var dateobj = new Date();
 var day = dateobj.getDate();
 var month = dateobj.getMonth()+1;
 var year = dateobj.getFullYear();
-console.log("MONTH IS "+month)
 var time = dateobj.getTime()
 var today = day.toString()+"/"+month.toString()+"/"+year.toString();
 
@@ -27,31 +26,30 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-  { field: 'date', headerName: 'Date'},
-  { field: 'services', headerName: 'Services'},
-  { field: 'paid', headerName: 'Paid'}
+  { field: 'date', headerName: 'Date', width:100},
+  { field: 'paid', headerName: 'Paid', width:90},
+  { field: 'services', headerName: 'Services', width:500}
 ]
 
 /* homies the ID must be unique of homie grid wont show element */
 const rows = [
-    {"id": 1,"date": today,"services": ["dye", "cut"],"paid": 20.00},
-    {"id": 2,"date": "17/5/2020","services": ["dye", "cut","shave"],"paid": 40.00},
-    {"id": 3,"date": "18/5/2020","services": ["dye", "cut"],"paid": 10.00},
-    {"id": 4,"date": "19/5/2020","services": ["dye", "cut"],"paid": 50.00},
-    {"id": 5,"date": "19/5/2020","services": ["dye", "cut"],"paid": 50.00},
-    {"id": 6,"date": "19/5/2020","services": ["dye", "cut"],"paid": 50.00},
-    {"id": 7,"date": "19/5/2020","services": ["dye", "cut"],"paid": 50.00},
-    {"id": 8,"date": "19/5/2020","services": ["dye", "cut"],"paid": 50.00},
-    {"id": 9,"date": "19/5/2020","services": ["dye", "cut"],"paid": 50.00},
-    {"id": 10,"date": "19/5/2020","services": ["dye", "cut"],"paid": 50.00},
-    {"id": 11,"date": "19/5/2020","services": ["dye", "cut"],"paid": 50.00},
-    {"id": 12,"date": "19/5/2020","services": ["dye", "cut"],"paid": 50.00},
-    {"id": 13,"date": "19/5/2020","services": ["dye", "cut"],"paid": 50.00},
-    {"id": 14,"date": "19/5/2020","services": ["dye", "cut"],"paid": 50.00},
+    {"id": 1,"date": today,"paid": 20.00,"services": ["dye", "cut", "shave", "pedicure", "wax"]},
+    {"id": 2,"date": today,"paid": 20.00,"services": ["dye", "cut", "shave", "pedicure", "wax"]},
+    {"id": 3,"date": today,"paid": 20.00,"services": ["dye", "cut", "shave", "pedicure", "wax"]},
+    {"id": 4,"date": today,"paid": 20.00,"services": ["dye", "cut", "shave", "pedicure", "wax"]},
+    {"id": 5,"date": today,"paid": 20.00,"services": ["dye", "cut", "shave", "pedicure", "wax"]},
+    {"id": 6,"date": today,"paid": 20.00,"services": ["dye", "cut", "shave", "pedicure", "wax"]},
+    {"id": 7,"date": today,"paid": 20.00,"services": ["dye", "cut", "shave", "pedicure", "wax"]},
+    {"id": 8,"date": today,"paid": 20.00,"services": ["dye", "cut", "shave", "pedicure", "wax"]},
+    {"id": 9,"date": today,"paid": 20.00,"services": ["dye", "cut", "shave", "pedicure", "wax"]},
+    {"id": 10,"date": today,"paid": 20.00,"services": ["dye", "cut", "shave", "pedicure", "wax"]},
+    {"id": 11,"date": today,"paid": 20.00,"services": ["dye", "cut", "shave", "pedicure", "wax"]},
 ]
+
 
 const AdminHome = (props) => {
     const classes = useStyles()
+    
     return (
         <Container maxWidth='xs'>
         <h1 className = {classes.pagename}>Order Details</h1>
@@ -61,7 +59,6 @@ const AdminHome = (props) => {
                     id="sdate"
                     label="Start Date"
                     type="date"
-                    defaultValue="dd/m/yyyy"
                     // onChange={this.handleChange}
                     className={classes.textField}
                     InputLabelProps={{
@@ -73,7 +70,6 @@ const AdminHome = (props) => {
                     id="edate"
                     label="End Date"
                     type="date"
-                    defaultValue="dd/m/yyyy"
                     // onChange={this.handleChange}
                     className={classes.textField}
                     InputLabelProps={{
@@ -81,8 +77,17 @@ const AdminHome = (props) => {
                     }}
                 />
             </form>
-            <div style={{ height: 600, width: '100%',margin:"10px auto"}}>
-                <DataGrid rows={rows} columns={columns} pageSize={9} checkboxSelection />
+            <div className="react-grid-multiline-content" style={{ height: 600, width: '100%',margin:"10px auto"}}>
+                <DataGrid rows={rows} columns={columns}
+                 pageSize={10}
+                checkboxSelection
+                autoHeight
+                // onCellEnter =
+                //cler, uncomment the next two lines and check design and keep/remove (refresh need)
+                // showCellRightBorder = "true"
+                // showColumnRightBorder = "true"
+                
+                />
             </div>
         </Container>
   );
