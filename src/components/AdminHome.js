@@ -1,17 +1,9 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
-import { Button, Container, TextField, Typography } from '@material-ui/core'
+import { Typography, Container, TextField, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import app from '../auth/config'
 import { AuthContext } from '../auth/auth'
-
-var dateobj = new Date()
-var day = dateobj.getDate()
-var month = dateobj.getMonth() + 1
-var year = dateobj.getFullYear()
-console.log('MONTH IS ' + month)
-var time = dateobj.getTime()
-var today = day.toString() + '/' + month.toString() + '/' + year.toString()
 
 const useStyles = makeStyles((theme) => ({
   theader: {
@@ -28,32 +20,24 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-  { field: 'date', headerName: 'Date' },
-  { field: 'services', headerName: 'Services' },
-  { field: 'paid', headerName: 'Paid' },
-]
-
-/* homies the ID must be unique of homie grid wont show element */
-const rows = [
-  { id: 1, date: today, services: ['dye', 'cut'], paid: 20.0 },
-  { id: 2, date: '17/5/2020', services: ['dye', 'cut', 'shave'], paid: 40.0 },
-  { id: 3, date: '18/5/2020', services: ['dye', 'cut'], paid: 10.0 },
-  { id: 4, date: '19/5/2020', services: ['dye', 'cut'], paid: 50.0 },
-  { id: 5, date: '19/5/2020', services: ['dye', 'cut'], paid: 50.0 },
-  { id: 6, date: '19/5/2020', services: ['dye', 'cut'], paid: 50.0 },
-  { id: 7, date: '19/5/2020', services: ['dye', 'cut'], paid: 50.0 },
-  { id: 8, date: '19/5/2020', services: ['dye', 'cut'], paid: 50.0 },
-  { id: 9, date: '19/5/2020', services: ['dye', 'cut'], paid: 50.0 },
-  { id: 10, date: '19/5/2020', services: ['dye', 'cut'], paid: 50.0 },
-  { id: 11, date: '19/5/2020', services: ['dye', 'cut'], paid: 50.0 },
-  { id: 12, date: '19/5/2020', services: ['dye', 'cut'], paid: 50.0 },
-  { id: 13, date: '19/5/2020', services: ['dye', 'cut'], paid: 50.0 },
-  { id: 14, date: '19/5/2020', services: ['dye', 'cut'], paid: 50.0 },
+  { field: 'Time', headerName: 'Date' },
+  { field: 'Service', headerName: 'Service' },
+  { field: 'Bill', headerName: 'Amount' },
 ]
 
 const AdminHome = (props) => {
   const classes = useStyles()
+  const [customers, setCustomers] = useState([{ item: null }])
   const { currentUser } = useContext(AuthContext)
+
+  useEffect(() => {
+    const apiUrl = `https://saloontracker.herokuapp.com/collection/Customers`
+    fetch(apiUrl)
+      .then((res) => res.json())
+      .then((orders) => {
+        setCustomers({ item: orders })
+      })
+  }, [setCustomers])
 
   return (
     <>
@@ -68,7 +52,6 @@ const AdminHome = (props) => {
               label='Start Date'
               type='date'
               defaultValue='dd/m/yyyy'
-              // onChange={this.handleChange}
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
@@ -80,7 +63,6 @@ const AdminHome = (props) => {
               label='End Date'
               type='date'
               defaultValue='dd/m/yyyy'
-              // onChange={this.handleChange}
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
@@ -88,12 +70,15 @@ const AdminHome = (props) => {
             />
           </form>
           <div style={{ height: 600, width: '100%', margin: '10px auto' }}>
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              pageSize={9}
-              checkboxSelection
-            />
+            {customers.item && (
+              <DataGrid
+                getRowId={(r) => r._id}
+                rows={customers.item}
+                columns={columns}
+                pageSize={9}
+                checkboxSelection
+              />
+            )}
           </div>
         </Container>
       ) : (
