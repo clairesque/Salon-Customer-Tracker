@@ -1,21 +1,21 @@
-import React from 'react'
+import React, { useCallback, useContext } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
 import Box from '@material-ui/core/Box'
 import { LockSimple } from 'phosphor-react'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import { useHistory } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router'
+import app from '../auth/config'
+import { AuthContext } from '../auth/auth'
 
 const useStyles = makeStyles((theme) => ({
   login: {
     display: 'flex',
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(12),
     ['@media (min-height:800px)']: {
       marginTop: theme.spacing(23),
     },
@@ -44,9 +44,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Login = (props) => {
+const Login = ({ history }) => {
   const classes = useStyles()
-  const history = useHistory()
+
+  const handleLogin = useCallback(
+    async (event) => {
+      event.preventDefault()
+
+      var { email, password } = event.target.elements
+
+      try {
+        await app
+          .auth()
+          .signInWithEmailAndPassword(
+            email.value + '@salontracker.com',
+            password.value
+          )
+        if (email.value.includes('admin')) history.push('/admin')
+        else history.push('/home')
+      } catch (error) {
+        alert(error)
+      }
+    },
+    [history]
+  )
+
+  const { currentUser } = useContext(AuthContext)
+
+  if (currentUser) {
+    return <Redirect to='/home' />
+  }
 
   return (
     <Container component='main' maxWidth='xs' className={classes.login}>
@@ -58,7 +85,7 @@ const Login = (props) => {
         <Typography component='h1' variant='h5'>
           Log In
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handleLogin} noValidate>
           <TextField
             variant='outlined'
             margin='normal'
@@ -81,17 +108,12 @@ const Login = (props) => {
             id='password'
             autoComplete='current-password'
           />
-          <FormControlLabel
-            control={<Checkbox value='remember' color='primary' />}
-            label='Remember me'
-          />
           <Button
-            type='button'
+            type='submit'
             fullWidth
             variant='contained'
             color='primary'
             className={classes.submit}
-            onClick={() => history.push('home')}
           >
             Submit
           </Button>
@@ -102,4 +124,4 @@ const Login = (props) => {
   )
 }
 
-export default Login
+export default withRouter(Login)

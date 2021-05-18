@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import Typography from '@material-ui/core/Typography'
-import { Button, CardActionArea, Container } from '@material-ui/core'
-import Card from './Card'
+import { Button, Container } from '@material-ui/core'
+
 import ItemCard from './Card'
 import { makeStyles } from '@material-ui/core/styles'
-import { CenterFocusStrong } from '@material-ui/icons'
+
+import app from '../auth/config'
+import { AuthContext } from '../auth/auth'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -17,8 +19,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 export default function Homepage() {
   const [error, setError] = React.useState(null)
-  const [isLoaded, setIsLoaded] = React.useState(false)
   const [items, setItems] = React.useState([])
+  const { currentUser } = useContext(AuthContext)
 
   const classes = useStyles()
 
@@ -27,31 +29,34 @@ export default function Homepage() {
       .then((res) => res.json())
       .then(
         (result) => {
-          setIsLoaded(true)
           setItems(result)
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
         // exceptions from actual bugs in components.
         (error) => {
-          setIsLoaded(true)
           setError(error)
         }
       )
   }, [])
   if (error) {
     return <div>Error: {error.message}</div>
-  } else if (!isLoaded) {
-    return <Typography className={classes.title}>Loading...</Typography>
   } else {
-    return (
-      <Container component='main'>
-        <Typography className={classes.title}>Add customer</Typography>
-        {items.map((item) => (
-          <ItemCard key={item._id} name={item.Service} price={item.Price} />
-        ))}
-        <Button variant='contained'>Submit</Button>
-      </Container>
-    )
+    return [
+      currentUser.email.includes('user') ? (
+        <Container component='main'>
+          <Button onClick={() => app.auth().signOut()}>Sign out</Button>
+          <Typography className={classes.title}>Add customer</Typography>
+          {items.map((item) => (
+            <ItemCard key={item._id} name={item.Service} price={item.Price} />
+          ))}
+          <Button variant='contained'>Submit</Button>
+        </Container>
+      ) : (
+        <Typography className='centered' color='textPrimary'>
+          You do not have permissions to access this page.
+        </Typography>
+      ),
+    ]
   }
 }
