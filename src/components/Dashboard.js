@@ -1,15 +1,12 @@
-import React, { } from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import { DataGrid } from '@material-ui/data-grid';
 import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 import LocalizaitonProvider from '@material-ui/lab/LocalizationProvider';
 import DatePicker from '@material-ui/lab/DatePicker';
-
+import app from '../auth/config'
+import { AuthContext } from '../auth/auth'
+import { Typography, TextField, Button } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     dGrid: {
@@ -46,56 +43,43 @@ const rows = [
 
 ];
 
+const Dashboard = (props) => {
+    // const [month, setMonth] = React.useState('');
+    // const [open, setOpen] = React.useState(false);
+    const { currentUser } = useContext(AuthContext)
+  
+    //commented all these for faichan UwU - anonymous
+    // useEffect(() => {
+    //   const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Admin`
+    //   fetch(apiUrl)
+    //     .then((res) => res.json())
+    //     .then((orders) => {
+    //       setCustomers({ item: orders })
+    //     })
+    // }, [setCustomers])
 
+    // const handleChange = (event) => {
+    //     setMonth(event.target.value);
+    // };
 
+    // const handleClose = () => {
+    //     setOpen(false);
+    // };
 
-
-const Dashboard = () => {
-    const [month, setMonth] = React.useState('');
-    const [open, setOpen] = React.useState(false);
-    const handleChange = (event) => {
-        setMonth(event.target.value);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
+    // const handleOpen = () => {
+    //     setOpen(true);
+    // };
     const classes = useStyles()
     const [value, setValue] = React.useState(new Date());
 
-
     return (
-
+        <div>
+        {currentUser.email.includes('admin') ? (
+        
         <div style={{ height: 600, width: '100%' }}>
-            {
-                <h1 style={{ textAlign: "Center" }}>Dashboard</h1>
+            <Button onClick={() => app.auth().signOut()}>Sign out</Button>
+            <h1 style={{ textAlign: "Center" }}>Dashboard</h1>
 
-                /* <div>
-                
-                <FormControl style={{ alignContent: "Center" }} className={classes.formControl}>
-                    <InputLabel id="demo-controlled-open-select-label">month</InputLabel>
-                    <Select
-                        labelId="demo-controlled-open-select-label"
-                        id="demo-controlled-open-select"
-                        open={open}
-                        onClose={handleClose}
-                        onOpen={handleOpen}
-                        value={month}
-                        onChange={handleChange}
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>Jan</MenuItem>
-                        <MenuItem value={20}>Feb</MenuItem>
-                        <MenuItem value={30}>March</MenuItem>
-                    </Select>
-                </FormControl>
-            </div> */}
             <LocalizaitonProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                     views={['year', 'month']}
@@ -105,6 +89,7 @@ const Dashboard = () => {
                     value={value}
                     onChange={(newValue) => {
                         setValue(newValue);
+                        alert(newValue);
                     }}
                     renderInput={(params) => (
                         <TextField
@@ -119,8 +104,13 @@ const Dashboard = () => {
 
 
             <DataGrid className={classes.dGrid} rows={rows} columns={columns} pmonthSize={5} checkboxSelection />
-        </div >
-
+        </div >):(
+            <Typography className='centered' color='textPrimary'>
+                Login admin mingy
+            </Typography>
+        )
+    }
+    </div>
     );
 }
 export default Dashboard
