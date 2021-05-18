@@ -11,11 +11,14 @@ import FormControl from '@material-ui/core/FormControl'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
+import Box from '@material-ui/core/Box'
+
 import { Handbag } from 'phosphor-react'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: '500',
+    margin: 5,
   },
   title: {
     fontSize: 50,
@@ -27,30 +30,39 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
   },
   formControl: {
-    margin: theme.spacing(3),
+    margin: theme.spacing(1),
   },
 }))
+
+//set to store selected items
+let addedItems = new Set()
+
 function ItemCard(props) {
-  var propsName = props.name
+  let propsName = props.name
+  let propsPrice = props.price
   const [state, setState] = React.useState({
     checkVal: false,
   })
-  var { checkVal } = state
+  let { checkVal } = state
 
   const handleChange = () => {
     setState({ ...state, checkVal: !checkVal })
-    console.log(checkVal)
+    //Items added to set
+    if (!addedItems.has(propsName)) addedItems.add(propsName)
+    else addedItems.delete(propsName)
+    console.log(addedItems)
   }
 
   const classes = useStyles()
-
+  //submit Set on click of submit button
+  const submitSelection = () => {}
   return (
     <Container component='main'>
       <div onClick={handleChange}>
         <Card className={classes.root} variant='elevation'>
-          <FormControl component='fieldset' className={classes.formControl}>
-            <FormGroup>
-              <CardContent>
+          <CardActions disableSpacing style={{ float: 'right' }}>
+            <FormControl component='fieldset' className={classes.formControl}>
+              <FormGroup>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -61,13 +73,17 @@ function ItemCard(props) {
                     />
                   }
                 />
-                {propsName}
-              </CardContent>
-            </FormGroup>
-          </FormControl>
+              </FormGroup>
+            </FormControl>
+          </CardActions>
+          <CardContent>
+            <Typography>{propsName}</Typography>
+            <Typography>
+              <em>Dhs: {propsPrice} </em>
+            </Typography>
+          </CardContent>
         </Card>
       </div>
-      <CardActionArea></CardActionArea>
     </Container>
   )
 }
