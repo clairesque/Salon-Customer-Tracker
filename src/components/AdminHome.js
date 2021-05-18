@@ -20,11 +20,10 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-  { field: 'date', headerName: 'Date', width:100},
-  { field: 'paid', headerName: 'Paid', width:90},
-  { field: 'services', headerName: 'Services', width:500}
+  { field: 'time', headerName: 'Time', width: 100 },
+  { field: 'paid', headerName: 'Paid', width: 90 },
+  { field: 'services', headerName: 'Services', width: 400 },
 ]
-
 
 const AdminHome = (props) => {
   const classes = useStyles()

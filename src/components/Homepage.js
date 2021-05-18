@@ -20,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Homepage() {
   const [error, setError] = React.useState(null)
   const [items, setItems] = React.useState([])
+  const [customers, setCustomers] = React.useState([])
+  const [total, setTotal] = React.useState(0)
   const { currentUser } = useContext(AuthContext)
 
   const classes = useStyles()
@@ -36,6 +38,39 @@ export default function Homepage() {
         }
       )
   }, [])
+
+  let dateTime = new Date()
+
+  var date = dateTime.toLocaleDateString()
+  var time = dateTime.toLocaleTimeString('en-US', {
+    hour12: true,
+    hour: 'numeric',
+    minute: 'numeric',
+  })
+
+  const getData = (data, sum) => {
+    setCustomers(data)
+    setTotal(sum)
+  }
+
+  const submitData = () => {
+    let orders = {
+      date: date,
+      time: time,
+      paid: total,
+      services: customers,
+    }
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/Customers`, {
+      method: 'POST',
+      body: JSON.stringify(orders),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+  }
+
   if (error) {
     return <div>Error: {error.message}</div>
   } else {
@@ -45,9 +80,16 @@ export default function Homepage() {
           <Button onClick={() => app.auth().signOut()}>Sign out</Button>
           <Typography className={classes.title}>Add customer</Typography>
           {items.map((item) => (
-            <ItemCard key={item._id} name={item.Service} price={item.Price} />
+            <ItemCard
+              key={item._id}
+              name={item.Service}
+              handleClick={getData}
+              price={item.Price}
+            />
           ))}
-          <Button variant='contained'>Submit</Button>
+          <Button variant='contained' onClick={submitData}>
+            Submit
+          </Button>
         </Container>
       ) : (
         <Typography className='centered' color='textPrimary'>

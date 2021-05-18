@@ -31,11 +31,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-//set to store selected items
-let addedItems = new Set()
+let addedItems = []
+let total = 0
 
 function ItemCard(props) {
-  let propsName = props.name
+  let propsName = " " + props.name
   let propsPrice = props.price
   const [state, setState] = React.useState({
     checkVal: false,
@@ -43,16 +43,20 @@ function ItemCard(props) {
   let { checkVal } = state
 
   const handleChange = () => {
-    setState({ ...state, checkVal: !checkVal })
-    //Items added to set
-    if (!addedItems.has(propsName)) addedItems.add(propsName)
-    else addedItems.delete(propsName)
-    console.log(addedItems)
+    setState({ checkVal: !checkVal })
+    if (!addedItems.includes(propsName)) { 
+      addedItems.push(propsName)
+      total += propsPrice
+    }
+    else { 
+      addedItems.splice(addedItems.indexOf(propsName), 1) 
+      total -= propsPrice
+    }
+    props.handleClick(addedItems, total)
   }
 
   const classes = useStyles()
-  //submit Set on click of submit button
-  const submitSelection = () => {}
+  
   return (
     <Container component='main'>
       <div onClick={handleChange}>
@@ -63,7 +67,6 @@ function ItemCard(props) {
                 <Checkbox
                   className='checkbox'
                   checked={checkVal}
-                  onChange={handleChange}
                   name={propsName}
                 />
               </FormGroup>
