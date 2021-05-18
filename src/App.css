@@ -35,9 +35,6 @@
   to {
     transform: rotate(360deg);
   }
-<<<<<<< HEAD
-}
-=======
 }
 .centered {
   height: 100vh;
@@ -45,4 +42,3 @@
   justify-content: center;
   align-items: center;
 }
->>>>>>> 2e1d63c95d8b1796e78f855329e3c9584bbb680c
