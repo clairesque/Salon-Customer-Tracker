@@ -6,12 +6,11 @@ import LocalizaitonProvider from '@material-ui/lab/LocalizationProvider';
 import DatePicker from '@material-ui/lab/DatePicker';
 import app from '../auth/config'
 import { AuthContext } from '../auth/auth'
-import { Typography, TextField, Button } from '@material-ui/core'
+import { Typography, Container, TextField, Button } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     dGrid: {
         marginTop: theme.spacing(6),
-
     },
     dDown: {
 
@@ -29,24 +28,42 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
+// const columns = [
+//     { field: 'Date', headerName: 'Date', width: 160 },
+//     { field: 'Amount', headerName: 'Amount', width: 160 },
+// ];
+
 const columns = [
-    { field: 'Date', headerName: 'Date', width: 160 },
-    { field: 'Amount', headerName: 'Amount', width: 160 },
+    { field: 'date', headerName: 'Date', width: 150 },
+    { field: 'paid', headerName: 'Paid', width: 90 },
+    { field: 'services', headerName: 'Services', width: 400 },
+  ]
 
-];
-
-const rows = [
-    { id: 1, Date: '01/01/2021', Amount: 200 },
-    { id: 2, Date: '01/01/2021', Amount: 200 },
-    { id: 3, Date: '01/01/2021', Amount: 200 },
-    { id: 4, Date: '01/01/2021', Amount: 200 },
-
-];
-
-const Dashboard = (props) => {
+const MonthlyReport = (props) => {
     // const [month, setMonth] = React.useState('');
     // const [open, setOpen] = React.useState(false);
+    const [customers, setCustomers] = useState([{ item: null }])
     const { currentUser } = useContext(AuthContext)
+    const [ monthlyTot, setMonthlyTot ] = useState([0])
+
+
+    useEffect(() => {
+        const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers`
+        fetch(apiUrl)
+        .then((res) => res.json())
+        .then((orders) => {
+            setCustomers({ item: orders })
+
+            let tot = 0
+            orders.forEach(item => {
+                tot += item.paid
+            });
+
+            setMonthlyTot(tot)
+     
+        })
+    }, [setCustomers])
+    
   
     //commented all these for faichan UwU - anonymous
     // useEffect(() => {
@@ -73,12 +90,14 @@ const Dashboard = (props) => {
     const [value, setValue] = React.useState(new Date());
 
     return (
-        <div>
+        <Container maxWidth='xs'>
         {currentUser.email.includes('admin') ? (
         
         <div style={{ height: 600, width: '100%' }}>
             <Button onClick={() => app.auth().signOut()}>Sign out</Button>
-            <h1 style={{ textAlign: "Center" }}>Dashboard</h1>
+            <Typography align='center' variant='h5' color='textPrimary'>
+                Monthly Report
+            </Typography>
 
             <LocalizaitonProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
@@ -89,7 +108,7 @@ const Dashboard = (props) => {
                     value={value}
                     onChange={(newValue) => {
                         setValue(newValue);
-                        alert(newValue);
+                        // alert(newValue);
                     }}
                     renderInput={(params) => (
                         <TextField
@@ -103,14 +122,27 @@ const Dashboard = (props) => {
             </LocalizaitonProvider>
 
 
-            <DataGrid className={classes.dGrid} rows={rows} columns={columns} pmonthSize={5} checkboxSelection />
+            <Container style={{height: 450}}>
+            {customers.item && (
+                <DataGrid
+                    getRowId={(r) => r._id}
+                    rows={customers.item}
+                    columns={columns}
+                    pageSize={9}
+                />
+                )}
+            </Container>
+            
+            <Typography color='textPrimary'>
+                Monthly {monthlyTot.toLocaleString("en-US", { style: "currency", currency: "AED" })}
+            </Typography>
         </div >):(
             <Typography className='centered' color='textPrimary'>
                 Login admin mingy
             </Typography>
         )
     }
-    </div>
+    </Container>
     );
 }
-export default Dashboard
+export default MonthlyReport

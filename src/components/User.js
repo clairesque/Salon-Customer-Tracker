@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }))
-export default function Homepage() {
+export default function User() {
   const [error, setError] = React.useState(null)
   const [items, setItems] = React.useState([])
   const [customers, setCustomers] = React.useState([])

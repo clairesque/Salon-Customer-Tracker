@@ -25,7 +25,7 @@ const columns = [
   { field: 'services', headerName: 'Services', width: 400 },
 ]
 
-const AdminHome = (props) => {
+const DailyReport = (props) => {
   const classes = useStyles()
   const [customers, setCustomers] = useState([{ item: null }])
   const { currentUser } = useContext(AuthContext)
@@ -44,23 +44,14 @@ const AdminHome = (props) => {
       {currentUser.email.includes('admin') ? (
         <Container maxWidth='xs'>
           <Button onClick={() => app.auth().signOut()}>Sign out</Button>
-          <h1 className={classes.pagename}>Order Details</h1>
+          <Typography align='center' variant='h5' color='textPrimary'>
+            Order Details
+            </Typography>
           <form noValidate>
             <TextField
               style={{ overflow: 'hidden' }}
               id='sdate'
-              label='Start Date'
-              type='date'
-              defaultValue='dd/m/yyyy'
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <TextField
-              style={{ overflow: 'hidden' }}
-              id='edate'
-              label='End Date'
+              label='Date'
               type='date'
               defaultValue='dd/m/yyyy'
               className={classes.textField}
@@ -69,6 +60,7 @@ const AdminHome = (props) => {
               }}
             />
           </form>
+          
           <div style={{ height: 600, width: '100%', margin: '10px auto' }}>
             {customers.item && (
               <DataGrid
@@ -90,4 +82,4 @@ const AdminHome = (props) => {
   )
 }
 
-export default AdminHome
+export default DailyReport
