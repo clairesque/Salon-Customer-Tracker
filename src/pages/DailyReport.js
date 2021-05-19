@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
+  monthlyText: {
+    marginTop: theme.spacing(2),
+  },
 }))
 
 const columns = [
@@ -30,6 +33,7 @@ const DailyReport = (props) => {
   const [customers, setCustomers] = useState([{ item: null }])
   const [selection, setSelection] = useState([])
   const { currentUser } = useContext(AuthContext)
+  const [dailyTot, setDailyTot] = useState([0])
 
   useEffect(() => {
     const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers`
@@ -37,6 +41,11 @@ const DailyReport = (props) => {
       .then((res) => res.json())
       .then((orders) => {
         setCustomers({ item: orders })
+        let total = 0
+        orders.forEach((item) => {
+          total += item.paid
+        })
+        setDailyTot(total)
       })
   }, [customers])
 
@@ -113,6 +122,15 @@ const DailyReport = (props) => {
               />
             )}
           </div>
+          <Grid className={`center ${classes.monthlyText}`}>
+            <Typography color='textPrimary'>
+              <span style={{ fontWeight: 'bold' }}> Total: </span>{' '}
+              {dailyTot.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'AED',
+              })}
+            </Typography>
+          </Grid>
         </Container>
       ) : (
         <Typography className='centered' color='textPrimary'>
