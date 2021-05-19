@@ -15,6 +15,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: '500',
     margin: 5,
+    borderRadius: '3%',
+  },
+  selected: {
+    minWidth: '500',
+    margin: 5,
+    backgroundColor: '#FF8065',
+    borderRadius: '3%',
   },
   title: {
     fontSize: 50,
@@ -58,7 +65,10 @@ function ItemCard(props) {
   return (
     <Container component='main'>
       <div onClick={handleChange}>
-        <Card className={classes.root} variant='elevation'>
+        <Card
+          className={checkVal ? classes.selected : classes.root}
+          variant='elevation'
+        >
           <CardActions disableSpacing style={{ float: 'right' }}>
             <FormControl component='fieldset' className={classes.formControl}>
               <FormGroup>
@@ -66,6 +76,7 @@ function ItemCard(props) {
                   className='checkbox'
                   checked={checkVal}
                   name={propsName}
+                  color='secondary'
                 />
               </FormGroup>
             </FormControl>
