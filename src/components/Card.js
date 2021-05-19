@@ -15,12 +15,14 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: '500',
     margin: 5,
+    height: '5em',
     borderRadius: '3%',
   },
   selected: {
     minWidth: '500',
+    height: '5em',
     margin: 5,
-    backgroundColor: '#FF8065',
+    backgroundColor: theme.palette.info.light,
     borderRadius: '3%',
   },
   title: {
@@ -76,16 +78,14 @@ function ItemCard(props) {
                   className='checkbox'
                   checked={checkVal}
                   name={propsName}
-                  color='secondary'
+                  style={{ color: 'black' }}
                 />
               </FormGroup>
             </FormControl>
           </CardActions>
           <CardContent>
-            <Typography>{propsName}</Typography>
-            <Typography>
-              <em>Dhs: {propsPrice} </em>
-            </Typography>
+            <Typography fontWeight='fontWeightBold'>{propsName}</Typography>
+            <Typography>{propsPrice} AED</Typography>
           </CardContent>
         </Card>
       </div>

@@ -1,42 +1,43 @@
 import React, { useEffect, useContext } from 'react'
-import ReactDOM from 'react-dom'
 import Typography from '@material-ui/core/Typography'
-import { Button, Container } from '@material-ui/core'
-
-import ItemCard from './Card'
+import { Button, Container, Grid } from '@material-ui/core'
+import ItemCard from '../components/Card'
 import { makeStyles } from '@material-ui/core/styles'
-
-import app from '../auth/config'
 import { AuthContext } from '../auth/auth'
+import SignOut from '../components/SignOut'
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    textAlign: 'center',
-    fontSize: 50,
-    '@media (min-height:800px)': {
-      fontSize: 30,
-    },
+    marginBottom: theme.spacing(2),
+    fontWeight: 'bold',
+  },
+  submit: {
+    width: '88%',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
 }))
 function EnabledButton(props) {
   return (
     <Button
+      className={props.className}
       variant='contained'
       color='secondary'
-      onClick={props.submitData}
-      style={{ position: 'relative', left: '70%' }}
+      onClick={props.onClick}
+      style={{ color: 'black' }}
     >
       Submit
     </Button>
   )
 }
-function DisabledButton() {
+function DisabledButton(props) {
   return (
     <Button
+      className={props.className}
       variant='contained'
       color='secondary'
       disabled
-      style={{ position: 'relative', left: '70%' }}
+      style={{ color: 'black' }}
     >
       Submit
     </Button>
@@ -79,9 +80,11 @@ export default function User() {
   }
   const ButtonType = (props) => {
     if (customers.length >= 1) {
-      return <EnabledButton submitData={props.submitData} />
+      return (
+        <EnabledButton onClick={props.onClick} className={props.className} />
+      )
     } else {
-      return <DisabledButton />
+      return <DisabledButton className={props.className} />
     }
   }
 
@@ -104,25 +107,35 @@ export default function User() {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>
+    return (
+      <Typography variant='h5' color='textPrimary' align='center'>
+        Error: {error.message}
+      </Typography>
+    )
   } else {
     return [
       currentUser.email.includes('user') ? (
         <Container component='main'>
-          <div>
-            <Button onClick={() => app.auth().signOut()}>Sign out</Button>
-            <Typography className={classes.title}>Add customer</Typography>
-            {items.map((item) => (
-              <ItemCard
-                key={item._id}
-                name={item.Service}
-                handleClick={getData}
-                price={item.Price}
-              />
-            ))}
-
-            <ButtonType submitData={submitData} />
-          </div>
+          <SignOut />
+          <Typography
+            align='center'
+            variant='h5'
+            color='textPrimary'
+            className={classes.title}
+          >
+            Add Customer
+          </Typography>
+          {items.map((item) => (
+            <ItemCard
+              key={item._id}
+              name={item.Service}
+              handleClick={getData}
+              price={item.Price}
+            />
+          ))}
+          <Grid className='center'>
+            <ButtonType className={classes.submit} onClick={submitData} />
+          </Grid>
         </Container>
       ) : (
         <Typography className='centered' color='textPrimary'>
