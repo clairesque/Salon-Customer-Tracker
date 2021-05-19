@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import Typography from '@material-ui/core/Typography'
-import { Button, Container } from '@material-ui/core'
+import { Button, Container, Grid } from '@material-ui/core'
 import ItemCard from '../components/Card'
 import { makeStyles } from '@material-ui/core/styles'
 import { AuthContext } from '../auth/auth'
@@ -8,11 +8,13 @@ import SignOut from '../components/SignOut'
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    textAlign: 'center',
-    fontSize: 50,
-    '@media (min-height:800px)': {
-      fontSize: 30,
-    },
+    marginBottom: theme.spacing(2),
+    fontWeight: 'bold',
+  },
+  submit: {
+    width: '88%',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
   },
 }))
 export default function User() {
@@ -76,7 +78,14 @@ export default function User() {
       currentUser.email.includes('user') ? (
         <Container component='main'>
           <SignOut />
-          <Typography className={classes.title}>Add customer</Typography>
+          <Typography
+            align='center'
+            variant='h5'
+            color='textPrimary'
+            className={classes.title}
+          >
+            Add Customer
+          </Typography>
           {items.map((item) => (
             <ItemCard
               key={item._id}
@@ -85,9 +94,16 @@ export default function User() {
               price={item.Price}
             />
           ))}
-          <Button variant='contained' onClick={submitData}>
-            Submit
-          </Button>
+          <Grid className='center'>
+            <Button
+              variant='contained'
+              className={classes.submit}
+              style={{ color: 'black' }}
+              onClick={submitData}
+            >
+              Submit
+            </Button>
+          </Grid>
         </Container>
       ) : (
         <Typography className='centered' color='textPrimary'>
