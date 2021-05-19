@@ -1,13 +1,10 @@
-// Was previously called admin
-
 import React, { useState, useEffect, useContext } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import { Typography, Container, TextField, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import app from '../auth/config'
 import { AuthContext } from '../auth/auth'
-import DeleteIcon from '@material-ui/icons/Delete';
-import { LaptopWindows } from '@material-ui/icons'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 const useStyles = makeStyles((theme) => ({
   theader: {
@@ -45,22 +42,21 @@ const DailyReport = (props) => {
       })
   }, [customers])
 
-  function deleteEntries(selected){
+  function deleteEntries(selected) {
     var delIds = Array.from(selected)
     const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers`
-    delIds.forEach(element => {
-      fetch(apiUrl+"/"+element, {
+    delIds.forEach((element) => {
+      fetch(apiUrl + '/' + element, {
         method: 'DELETE',
-        mode: "cors",
-        cache: "no-store",
-        credentials: "same-origin",
+        mode: 'cors',
+        cache: 'no-store',
+        credentials: 'same-origin',
         headers: {
-        
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: null
+        body: null,
       })
-    });
+    })
   }
 
   return (
@@ -70,14 +66,16 @@ const DailyReport = (props) => {
           <Button onClick={() => app.auth().signOut()}>Sign out</Button>
           <Typography align='center' variant='h5' color='textPrimary'>
             Daily Report
-            </Typography>
+          </Typography>
 
+          <Typography>
+            <DeleteIcon
+              onClick={() => {
+                deleteEntries(selection)
+              }}
+            />
+          </Typography>
 
-            <Typography>
-              <DeleteIcon onClick = {() => {deleteEntries(selection)}} />
-            </Typography>
-
-            
           <form noValidate>
             <TextField
               style={{ overflow: 'hidden' }}
@@ -90,7 +88,7 @@ const DailyReport = (props) => {
               }}
             />
           </form>
-          
+
           <div style={{ height: 600, width: '100%', margin: '10px auto' }}>
             {customers.item && (
               <DataGrid
@@ -99,10 +97,10 @@ const DailyReport = (props) => {
                 rows={customers.item}
                 columns={columns}
                 pageSize={9}
-                onRowSelected={(e) => console.log("selected rowData:", e.data)}
+                onRowSelected={(e) => console.log('selected rowData:', e.data)}
                 onSelectionModelChange={(e) => {
-                  const selectedIDs = new Set(e.selectionModel);
-                  console.log("selected IDS:", selectedIDs);
+                  const selectedIDs = new Set(e.selectionModel)
+                  console.log('selected IDS:', selectedIDs)
                   setSelection(selectedIDs)
                 }}
                 {...customers.item}
