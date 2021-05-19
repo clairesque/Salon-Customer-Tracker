@@ -4,9 +4,9 @@ import './App.css'
 import { createTheme, ThemeProvider } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Login from './components/Login'
-import AdminHome from './components/AdminHome'
-import Dashboard from './components/Dashboard'
-import Homepage from './components/Homepage'
+import DailyReport from './components/DailyReport'
+import MonthlyReport from './components/MonthlyReport'
+import User from './components/User'
 import { AuthProvider } from './auth/auth'
 import PrivateRoute from './components/PrivateRoute'
 
@@ -37,9 +37,9 @@ function App() {
         <Router>
           <div>
             <Route exact path='/' component={Login} />
-            <PrivateRoute exact path='/admin' component={AdminHome} />
-            <PrivateRoute exact path='/home' component={Homepage} />
-            <PrivateRoute exact path='/dashboard' component={Dashboard} />
+            <PrivateRoute exact path='/daily' component={DailyReport} />
+            <PrivateRoute exact path='/user' component={User} />
+            <PrivateRoute exact path='/monthly' component={MonthlyReport} />
           </div>
         </Router>
       </AuthProvider>

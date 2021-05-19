@@ -60,8 +60,8 @@ const Login = ({ history }) => {
             email.value + '@salontracker.com',
             password.value
           )
-        if (email.value.includes('admin')) history.push('/admin')
-        else history.push('/home')
+        if (email.value.includes('admin')) history.push('/daily')
+        else history.push('/user')
       } catch (error) {
         alert(error)
       }
@@ -72,7 +72,7 @@ const Login = ({ history }) => {
   const { currentUser } = useContext(AuthContext)
 
   if (currentUser) {
-    return <Redirect to='/home' />
+    return <Redirect to='/user' />
   }
 
   return (

@@ -5,7 +5,7 @@ router.get('/login', (req, res, next) => {
 
 });
 
-router.get('/home', (req, res, next) => {
+router.get('/user', (req, res, next) => {
 
 });
 
