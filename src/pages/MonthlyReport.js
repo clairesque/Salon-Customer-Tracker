@@ -62,7 +62,7 @@ const MonthlyReport = (props) => {
 
         setMonthlyTot(tot)
       })
-  }, [setCustomers])
+  }, [customers])
 
   //commented all these for faichan UwU - anonymous
   // useEffect(() => {
