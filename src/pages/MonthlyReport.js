@@ -4,9 +4,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns'
 import LocalizaitonProvider from '@material-ui/lab/LocalizationProvider'
 import DatePicker from '@material-ui/lab/DatePicker'
-import app from '../auth/config'
 import { AuthContext } from '../auth/auth'
 import { Typography, Container, TextField, Button } from '@material-ui/core'
+import SignOut from '../components/SignOut'
 
 const useStyles = makeStyles((theme) => ({
   dGrid: {
@@ -88,7 +88,7 @@ const MonthlyReport = (props) => {
     <Container maxWidth='xs'>
       {currentUser.email.includes('admin') ? (
         <div style={{ height: 600, width: '100%' }}>
-          <Button onClick={() => app.auth().signOut()}>Sign out</Button>
+          <SignOut />
           <Typography align='center' variant='h5' color='textPrimary'>
             Monthly Report
           </Typography>

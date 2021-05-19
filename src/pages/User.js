@@ -1,12 +1,10 @@
 import React, { useEffect, useContext } from 'react'
 import Typography from '@material-ui/core/Typography'
 import { Button, Container } from '@material-ui/core'
-
-import ItemCard from './Card'
+import ItemCard from '../components/Card'
 import { makeStyles } from '@material-ui/core/styles'
-
-import app from '../auth/config'
 import { AuthContext } from '../auth/auth'
+import SignOut from '../components/SignOut'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -77,7 +75,7 @@ export default function User() {
     return [
       currentUser.email.includes('user') ? (
         <Container component='main'>
-          <Button onClick={() => app.auth().signOut()}>Sign out</Button>
+          <SignOut />
           <Typography className={classes.title}>Add customer</Typography>
           {items.map((item) => (
             <ItemCard
