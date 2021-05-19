@@ -27,7 +27,7 @@ export default function User() {
   const classes = useStyles()
 
   useEffect(() => {
-    fetch('http://saloontracker.herokuapp.com/collection/Services')
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/Services`)
       .then((res) => res.json())
       .then(
         (result) => {

@@ -8,7 +8,6 @@ import {
   CardContent,
   FormControl,
   FormGroup,
-  FormControlLabel,
 } from '@material-ui/core'
 import Checkbox from '@material-ui/core/Checkbox'
 
@@ -16,6 +15,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: '500',
     margin: 5,
+    borderRadius: '3%',
+  },
+  selected: {
+    minWidth: '500',
+    margin: 5,
+    backgroundColor: '#FF8065',
+    borderRadius: '3%',
   },
   title: {
     fontSize: 50,
@@ -35,7 +41,7 @@ let addedItems = []
 let total = 0
 
 function ItemCard(props) {
-  let propsName = " " + props.name
+  let propsName = ' ' + props.name
   let propsPrice = props.price
   const [state, setState] = React.useState({
     checkVal: false,
@@ -44,23 +50,25 @@ function ItemCard(props) {
 
   const handleChange = () => {
     setState({ checkVal: !checkVal })
-    if (!addedItems.includes(propsName)) { 
+    if (!addedItems.includes(propsName)) {
       addedItems.push(propsName)
       total += propsPrice
-    }
-    else { 
-      addedItems.splice(addedItems.indexOf(propsName), 1) 
+    } else {
+      addedItems.splice(addedItems.indexOf(propsName), 1)
       total -= propsPrice
     }
     props.handleClick(addedItems, total)
   }
 
   const classes = useStyles()
-  
+
   return (
     <Container component='main'>
       <div onClick={handleChange}>
-        <Card className={classes.root} variant='elevation'>
+        <Card
+          className={checkVal ? classes.selected : classes.root}
+          variant='elevation'
+        >
           <CardActions disableSpacing style={{ float: 'right' }}>
             <FormControl component='fieldset' className={classes.formControl}>
               <FormGroup>
@@ -68,6 +76,7 @@ function ItemCard(props) {
                   className='checkbox'
                   checked={checkVal}
                   name={propsName}
+                  color='secondary'
                 />
               </FormGroup>
             </FormControl>
