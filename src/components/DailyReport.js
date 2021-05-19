@@ -1,22 +1,26 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
-import { Typography, Container, TextField, Button } from '@material-ui/core'
+import { Typography, Container, TextField, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import app from '../auth/config'
 import { AuthContext } from '../auth/auth'
-import DeleteIcon from '@material-ui/icons/Delete'
+import { SignOut, Trash } from 'phosphor-react'
 
 const useStyles = makeStyles((theme) => ({
-  theader: {
-    backgroundColor: theme.palette.primary.main,
+  title: {
+    marginBottom: theme.spacing(5),
+    fontWeight: 'bold'
   },
-  pagename: {
-    textAlign: 'center',
+  delete: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   },
-  textField: {
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    width: 150,
+  signOut: {
+    paddingTop: '1em',
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   },
 }))
 
@@ -42,7 +46,7 @@ const DailyReport = (props) => {
       })
   }, [customers])
 
-  function deleteEntries(selected) {
+  const deleteEntries = (selected) => {
     var delIds = Array.from(selected)
     const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers`
     delIds.forEach((element) => {
@@ -63,32 +67,53 @@ const DailyReport = (props) => {
     <>
       {currentUser.email.includes('admin') ? (
         <Container maxWidth='xs'>
-          <Button onClick={() => app.auth().signOut()}>Sign out</Button>
-          <Typography align='center' variant='h5' color='textPrimary'>
+          <Grid
+            container
+            spacing={35}
+            direction='row'
+            justify='space-between'
+            alignItems='center'
+          >
+            <Grid item xs={6}></Grid>
+            <Grid item xs={6}>
+              <SignOut size={28} onClick={() => app.auth().signOut()}  className={classes.signOut}/>
+            </Grid>
+          </Grid>
+          <Typography
+            align='center'
+            variant='h5'
+            color='textPrimary'
+            className={classes.title}
+          >
             Daily Report
           </Typography>
-
-          <Typography>
-            <DeleteIcon
-              onClick={() => {
-                deleteEntries(selection)
-              }}
-            />
-          </Typography>
-
-          <form noValidate>
-            <TextField
-              style={{ overflow: 'hidden' }}
-              id='sdate'
-              label='Date'
-              type='date'
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </form>
-
+          <Grid
+            container
+            spacing={35}
+            direction='row'
+            justify='space-between'
+            alignItems='center'
+          >
+            <Grid item xs={6}>
+              <TextField
+                id='sdate'
+                label='Date'
+                type='date'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={6} className={classes.delete}>
+              <Trash
+                size={28}
+                weight='duotone'
+                onClick={() => {
+                  deleteEntries(selection)
+                }}
+              />
+            </Grid>
+          </Grid>
           <div style={{ height: 600, width: '100%', margin: '10px auto' }}>
             {customers.item && (
               <DataGrid
@@ -97,10 +122,8 @@ const DailyReport = (props) => {
                 rows={customers.item}
                 columns={columns}
                 pageSize={9}
-                onRowSelected={(e) => console.log('selected rowData:', e.data)}
                 onSelectionModelChange={(e) => {
                   const selectedIDs = new Set(e.selectionModel)
-                  console.log('selected IDS:', selectedIDs)
                   setSelection(selectedIDs)
                 }}
                 {...customers.item}
