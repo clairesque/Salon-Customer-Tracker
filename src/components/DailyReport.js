@@ -45,7 +45,7 @@ const DailyReport = (props) => {
       })
   }, [customers])
 
-  function delFunc(selected){
+  function deleteEntries(selected){
     var delIds = Array.from(selected)
     const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers`
     delIds.forEach(element => {
@@ -74,7 +74,7 @@ const DailyReport = (props) => {
 
 
             <Typography>
-              <DeleteIcon onClick = {() => {delFunc(selection)}} />
+              <DeleteIcon onClick = {() => {deleteEntries(selection)}} />
             </Typography>
 
             
