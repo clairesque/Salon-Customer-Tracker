@@ -1,9 +1,13 @@
+// Was previously called admin
+
 import React, { useState, useEffect, useContext } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import { Typography, Container, TextField, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import app from '../auth/config'
 import { AuthContext } from '../auth/auth'
+import DeleteIcon from '@material-ui/icons/Delete';
+import { LaptopWindows } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   theader: {
@@ -23,11 +27,13 @@ const columns = [
   { field: 'time', headerName: 'Time', width: 100 },
   { field: 'paid', headerName: 'Paid', width: 90 },
   { field: 'services', headerName: 'Services', width: 400 },
+  { field: 'delete', headerName: '', width: 50 },
 ]
 
 const DailyReport = (props) => {
   const classes = useStyles()
   const [customers, setCustomers] = useState([{ item: null }])
+  const [selection, setSelection] = useState([])
   const { currentUser } = useContext(AuthContext)
 
   useEffect(() => {
@@ -37,7 +43,25 @@ const DailyReport = (props) => {
       .then((orders) => {
         setCustomers({ item: orders })
       })
-  }, [setCustomers])
+  }, [customers])
+
+  function delFunc(selected){
+    var delIds = Array.from(selected)
+    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers`
+    delIds.forEach(element => {
+      fetch(apiUrl+"/"+element, {
+        method: 'DELETE',
+        mode: "cors",
+        cache: "no-store",
+        credentials: "same-origin",
+        headers: {
+        
+          'Content-Type': 'application/json'
+        },
+        body: null
+      })
+    });
+  }
 
   return (
     <>
@@ -45,15 +69,21 @@ const DailyReport = (props) => {
         <Container maxWidth='xs'>
           <Button onClick={() => app.auth().signOut()}>Sign out</Button>
           <Typography align='center' variant='h5' color='textPrimary'>
-            Order Details
+            Daily Report
             </Typography>
+
+
+            <Typography>
+              <DeleteIcon onClick = {() => {delFunc(selection)}} />
+            </Typography>
+
+            
           <form noValidate>
             <TextField
               style={{ overflow: 'hidden' }}
               id='sdate'
               label='Date'
               type='date'
-              defaultValue='dd/m/yyyy'
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
@@ -64,11 +94,18 @@ const DailyReport = (props) => {
           <div style={{ height: 600, width: '100%', margin: '10px auto' }}>
             {customers.item && (
               <DataGrid
+                checkboxSelection
                 getRowId={(r) => r._id}
                 rows={customers.item}
                 columns={columns}
                 pageSize={9}
-                checkboxSelection
+                onRowSelected={(e) => console.log("selected rowData:", e.data)}
+                onSelectionModelChange={(e) => {
+                  const selectedIDs = new Set(e.selectionModel);
+                  console.log("selected IDS:", selectedIDs);
+                  setSelection(selectedIDs)
+                }}
+                {...customers.item}
               />
             )}
           </div>
