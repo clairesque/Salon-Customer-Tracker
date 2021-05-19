@@ -2,28 +2,25 @@ import React, { useState, useContext, useEffect } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import { makeStyles } from '@material-ui/core/styles'
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns'
-import LocalizaitonProvider from '@material-ui/lab/LocalizationProvider'
+import LocalizationProvider from '@material-ui/lab/LocalizationProvider'
 import DatePicker from '@material-ui/lab/DatePicker'
 import { AuthContext } from '../auth/auth'
-import { Typography, Container, TextField, Button } from '@material-ui/core'
+import { Typography, Container, TextField, Button, Grid } from '@material-ui/core'
 import SignOut from '../components/SignOut'
 
 const useStyles = makeStyles((theme) => ({
-  dGrid: {
-    marginTop: theme.spacing(6),
+  title: {
+    marginBottom: theme.spacing(2),
+    fontWeight: 'bold',
   },
-  dDown: {
-    marginLeft: theme.spacing(1),
-    padding: theme.spacing(4),
+  monthPicker: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: theme.spacing(2),
   },
-  button: {
-    display: 'block',
+  monthlyText: {
     marginTop: theme.spacing(2),
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
+  }
 }))
 
 // const columns = [
@@ -43,6 +40,8 @@ const MonthlyReport = (props) => {
   const [customers, setCustomers] = useState([{ item: null }])
   const { currentUser } = useContext(AuthContext)
   const [monthlyTot, setMonthlyTot] = useState([0])
+  const classes = useStyles()
+  const [value, setValue] = React.useState(new Date())
 
   useEffect(() => {
     const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers`
@@ -81,28 +80,28 @@ const MonthlyReport = (props) => {
   // const handleOpen = () => {
   //     setOpen(true);
   // };
-  const classes = useStyles()
-  const [value, setValue] = React.useState(new Date())
 
   return (
     <Container maxWidth='xs'>
       {currentUser.email.includes('admin') ? (
         <div style={{ height: 600, width: '100%' }}>
           <SignOut />
-          <Typography align='center' variant='h5' color='textPrimary'>
+          <Typography align='center' variant='h5' color='textPrimary' className={classes.title}>
             Monthly Report
           </Typography>
 
-          <LocalizaitonProvider dateAdapter={AdapterDateFns}>
+        <Grid className={classes.monthPicker}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               views={['year', 'month']}
-              label='Year and Month'
-              minDate={new Date('2012-03-01')}
-              maxDate={new Date('2023-06-01')}
+              label='Pick a Month'
+              minDate={new Date('2021-01-01')}
+              maxDate={new Date('2023-12-01')}
               value={value}
               onChange={(newValue) => {
                 setValue(newValue)
               }}
+              inputStyle={{ textAlign: 'center' }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -112,7 +111,8 @@ const MonthlyReport = (props) => {
                 />
               )}
             />
-          </LocalizaitonProvider>
+          </LocalizationProvider>
+          </Grid>
 
           <Container style={{ height: 450 }}>
             {customers.item && (
@@ -125,13 +125,15 @@ const MonthlyReport = (props) => {
             )}
           </Container>
 
+<Grid className={`center ${classes.monthlyText}`}>
           <Typography color='textPrimary'>
-            Monthly{' '}
+            <span style={{fontWeight: "bold"}}> Monthly: </span>{' '}
             {monthlyTot.toLocaleString('en-US', {
               style: 'currency',
               currency: 'AED',
             })}
           </Typography>
+          </Grid>
         </div>
       ) : (
         <Typography className='centered' color='textPrimary'>

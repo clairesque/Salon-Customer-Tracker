@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import { Typography, Container, TextField, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import app from '../auth/config'
 import { AuthContext } from '../auth/auth'
 import { Trash } from 'phosphor-react'
 import SignOut from '../components/SignOut'
@@ -98,7 +97,7 @@ const DailyReport = (props) => {
               />
             </Grid>
           </Grid>
-          <div style={{ height: 600, width: '100%', margin: '10px auto' }}>
+          <div style={{ height: 450, width: '100%', margin: '10px auto' }}>
             {customers.item && (
               <DataGrid
                 checkboxSelection
