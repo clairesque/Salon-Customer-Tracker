@@ -1,4 +1,5 @@
 import React, { useEffect, useContext } from 'react'
+import ReactDOM from 'react-dom'
 import Typography from '@material-ui/core/Typography'
 import { Button, Container } from '@material-ui/core'
 
@@ -17,6 +18,30 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }))
+function EnabledButton(props) {
+  return (
+    <Button
+      variant='contained'
+      color='secondary'
+      onClick={props.submitData}
+      style={{ position: 'relative', left: '70%' }}
+    >
+      Submit
+    </Button>
+  )
+}
+function DisabledButton() {
+  return (
+    <Button
+      variant='contained'
+      color='secondary'
+      disabled
+      style={{ position: 'relative', left: '70%' }}
+    >
+      Submit
+    </Button>
+  )
+}
 export default function User() {
   const [error, setError] = React.useState(null)
   const [items, setItems] = React.useState([])
@@ -52,6 +77,13 @@ export default function User() {
     setCustomers(data)
     setTotal(sum)
   }
+  const ButtonType = (props) => {
+    if (customers.length >= 1) {
+      return <EnabledButton submitData={props.submitData} />
+    } else {
+      return <DisabledButton />
+    }
+  }
 
   const submitData = () => {
     let orders = {
@@ -77,19 +109,20 @@ export default function User() {
     return [
       currentUser.email.includes('user') ? (
         <Container component='main'>
-          <Button onClick={() => app.auth().signOut()}>Sign out</Button>
-          <Typography className={classes.title}>Add customer</Typography>
-          {items.map((item) => (
-            <ItemCard
-              key={item._id}
-              name={item.Service}
-              handleClick={getData}
-              price={item.Price}
-            />
-          ))}
-          <Button variant='contained' onClick={submitData}>
-            Submit
-          </Button>
+          <div>
+            <Button onClick={() => app.auth().signOut()}>Sign out</Button>
+            <Typography className={classes.title}>Add customer</Typography>
+            {items.map((item) => (
+              <ItemCard
+                key={item._id}
+                name={item.Service}
+                handleClick={getData}
+                price={item.Price}
+              />
+            ))}
+
+            <ButtonType submitData={submitData} />
+          </div>
         </Container>
       ) : (
         <Typography className='centered' color='textPrimary'>
