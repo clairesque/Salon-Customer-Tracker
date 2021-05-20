@@ -80,7 +80,7 @@ const DailyReport = (props) => {
           >
             Daily Report
           </Typography>
-          <Grid
+          {/* <Grid
             container
             spacing={35}
             direction='row'
@@ -106,7 +106,7 @@ const DailyReport = (props) => {
                 }}
               />
             </Grid>
-          </Grid>
+          </Grid> */}
           <div style={{ height: 575, width: '100%', margin: '10px auto' }}>
             {customers.item && (
               <DataGrid
