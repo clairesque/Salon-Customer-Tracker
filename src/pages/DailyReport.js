@@ -30,19 +30,28 @@ const columns = [
 
 let dateobj = new Date()
 let month = (dateobj.getMonth()+1).toString()
-let curr = (dateobj.getDate()).toString()+"-"+month+"-"+(dateobj.getFullYear()).toString()
+let day = dateobj.getDate().toString()
+
+if (month.length == 1){
+  month = "0"+month
+}
+if (day.length == 1){
+  day = "0"+day
+}
+
+let curr = day+"-"+month+"-"+(dateobj.getFullYear()).toString()
 
 const DailyReport = (props) => {
   const classes = useStyles()
   const [customers, setCustomers] = useState([{ item: null }])
   const [deleted, setDeleted] = useState(false)
-  const [date, setDate] = useState("all")
+  const [date, setDate] = useState(curr)
   const [selection, setSelection] = useState([])
   const { currentUser } = useContext(AuthContext)
   const [dailyTot, setDailyTot] = useState([0])
 
   useEffect(() => {
-    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers`
+    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/daily/`+curr
     fetch(apiUrl)
       .then((res) => res.json())
       .then((orders) => {
@@ -52,8 +61,10 @@ const DailyReport = (props) => {
           total += item.paid
         })
         setDailyTot(total)
+        console.log(curr)
+
       })
-  }, [deleted])
+  }, [deleted]||[date])
 
   const deleteEntries = (selected) => {
     var delIds = Array.from(selected)
@@ -71,14 +82,15 @@ const DailyReport = (props) => {
       })
     })
     setDeleted(!deleted)
-    setDate("all")
+    setDeleted(!deleted)
+    setDate(curr)
   }
 
   const handleChangeDate = e => {
     let newdate = moment((e.target.value)).format("DD-MM-YYYY")
     setDate(e.target.value);
     console.log(newdate)
-    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/`+newdate
+    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/daily/`+newdate
     fetch(apiUrl)
       .then((res) => res.json())
       .then((orders) => {

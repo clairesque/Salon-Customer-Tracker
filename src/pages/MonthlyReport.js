@@ -34,10 +34,14 @@ const useStyles = makeStyles((theme) => ({
 // ];
 
 const columns = [
-  { field: 'date', headerName: 'Date', width: 150 },
-  { field: 'paid', headerName: 'Paid', width: 90 },
-  { field: 'services', headerName: 'Services', width: 400 },
+  { field: 'date', headerName: 'Date', width:200},
+  { field: 'paid', headerName: 'Paid'},
 ]
+
+var currmonth = (parseInt(new Date().getMonth())+1).toString()
+if (currmonth.length === 1){
+  currmonth = "0"+currmonth
+}
 
 const MonthlyReport = (props) => {
   // const [month, setMonth] = React.useState('');
@@ -45,11 +49,12 @@ const MonthlyReport = (props) => {
   const [customers, setCustomers] = useState([{ item: null }])
   const { currentUser } = useContext(AuthContext)
   const [monthlyTot, setMonthlyTot] = useState([0])
+  const [month, setMonth] = useState(currmonth)
   const classes = useStyles()
   const [value, setValue] = React.useState(new Date())
 
   useEffect(() => {
-    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers`
+    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/monthly/`+month
     fetch(apiUrl)
       .then((res) => res.json())
       .then((orders) => {
@@ -62,7 +67,19 @@ const MonthlyReport = (props) => {
 
         setMonthlyTot(tot)
       })
-  }, [customers])
+  }, [month])
+
+  const changeMonth = (date) => {
+    date = new Date(date)
+    var selected = (parseInt(date.getMonth())+1).toString()
+    if (selected.length === 1){
+      selected = "0"+selected
+    }
+    setMonth(selected)
+    setMonth(selected)
+    console.log(selected+" "+currmonth)
+  }
+  
 
   //commented all these for faichan UwU - anonymous
   // useEffect(() => {
@@ -97,19 +114,20 @@ const MonthlyReport = (props) => {
             color='textPrimary'
             className={classes.title}
           >
-            Monthly Report
+            Monthly Report for {month}
           </Typography>
 
           <Grid className={classes.monthPicker}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                views={['year', 'month']}
+                views={['month']}
                 label='Pick a Month'
                 minDate={new Date('2021-01-01')}
                 maxDate={new Date('2023-12-01')}
                 value={value}
                 onChange={(newValue) => {
                   setValue(newValue)
+                  changeMonth(newValue)
                 }}
                 inputStyle={{ textAlign: 'center' }}
                 renderInput={(params) => (
