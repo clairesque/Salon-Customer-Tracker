@@ -25,12 +25,12 @@ const columns = [
   { field: 'time', headerName: 'Time', width: 100 },
   { field: 'paid', headerName: 'Paid', width: 90 },
   { field: 'services', headerName: 'Services', width: 400 },
-  { field: 'delete', headerName: '', width: 50 },
 ]
 
 const DailyReport = (props) => {
   const classes = useStyles()
   const [customers, setCustomers] = useState([{ item: null }])
+  const [deleted, setDeleted] = useState(false)
   const [selection, setSelection] = useState([])
   const { currentUser } = useContext(AuthContext)
   const [dailyTot, setDailyTot] = useState([0])
@@ -47,7 +47,7 @@ const DailyReport = (props) => {
         })
         setDailyTot(total)
       })
-  }, [customers])
+  }, [deleted])
 
   const deleteEntries = (selected) => {
     var delIds = Array.from(selected)
@@ -64,6 +64,7 @@ const DailyReport = (props) => {
         body: null,
       })
     })
+    setDeleted(!deleted)
   }
 
   return (
@@ -79,7 +80,7 @@ const DailyReport = (props) => {
           >
             Daily Report
           </Typography>
-          <Grid
+          {/* <Grid
             container
             spacing={35}
             direction='row'
@@ -105,8 +106,8 @@ const DailyReport = (props) => {
                 }}
               />
             </Grid>
-          </Grid>
-          <div style={{ height: 450, width: '100%', margin: '10px auto' }}>
+          </Grid> */}
+          <div style={{ height: 575, width: '100%', margin: '10px auto' }}>
             {customers.item && (
               <DataGrid
                 checkboxSelection
