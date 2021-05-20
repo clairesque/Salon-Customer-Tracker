@@ -25,7 +25,6 @@ const columns = [
   { field: 'time', headerName: 'Time', width: 100 },
   { field: 'paid', headerName: 'Paid', width: 90 },
   { field: 'services', headerName: 'Services', width: 400 },
-  { field: 'delete', headerName: '', width: 50 },
 ]
 
 const DailyReport = (props) => {
