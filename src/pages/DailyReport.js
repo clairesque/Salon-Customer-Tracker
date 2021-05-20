@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   monthlyText: {
     marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
 }))
 

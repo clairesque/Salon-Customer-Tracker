@@ -35,7 +35,6 @@ function App() {
   const NavBarRoutes = () => (
     <>
       <PrivateRoute exact path='/daily' component={DailyReport} />
-      <PrivateRoute exact path='/user' component={User} />
       <PrivateRoute exact path='/monthly' component={MonthlyReport} />
       <NavBar />
     </>
@@ -46,6 +45,7 @@ function App() {
         <Router>
           <Switch>
             <Route exact path='/' component={Login} />
+            <PrivateRoute exact path='/user' component={User} />
             <Route component={NavBarRoutes} />
           </Switch>
         </Router>
