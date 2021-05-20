@@ -75,8 +75,15 @@ export default function User() {
   }, [])
 
   let dateTime = new Date()
-
-  var date = dateTime.toLocaleDateString()
+  var day = (dateTime.getDate()).toString()
+  var month = (dateTime.getMonth()+1).toString()
+  if (month.length===1){
+    month= "0"+month
+  }
+  if (day.length===1){
+    day= "0"+day
+  }
+  var date = day+"-"+month+"-"+(dateTime.getFullYear()).toString()
   var time = dateTime.toLocaleTimeString('en-US', {
     hour12: true,
     hour: 'numeric',
@@ -86,7 +93,6 @@ export default function User() {
   const getData = (data, sum) => {
     setCustomers(data)
     setTotal(sum)
-    
   }
   const ButtonType = (props) => {
     if (customers.length >= 1) {
@@ -103,6 +109,7 @@ export default function User() {
   const submitData = () => {
     let orders = {
       date: date,
+      month: month,
       time: time,
       paid: total,
       services: customers,

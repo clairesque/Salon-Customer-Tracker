@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css'
 import { createTheme, ThemeProvider } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -9,6 +9,7 @@ import MonthlyReport from './pages/MonthlyReport'
 import User from './pages/User'
 import { AuthProvider } from './auth/auth'
 import PrivateRoute from './components/PrivateRoute'
+import NavBar from './components/NavBar'
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -31,16 +32,22 @@ function App() {
       }),
     [prefersDarkMode]
   )
+  const NavBarRoutes = () => (
+    <>
+      <PrivateRoute exact path='/daily' component={DailyReport} />
+      <PrivateRoute exact path='/monthly' component={MonthlyReport} />
+      <NavBar />
+    </>
+  )
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <Router>
-          <div>
+          <Switch>
             <Route exact path='/' component={Login} />
-            <PrivateRoute exact path='/daily' component={DailyReport} />
             <PrivateRoute exact path='/user' component={User} />
-            <PrivateRoute exact path='/monthly' component={MonthlyReport} />
-          </div>
+            <Route component={NavBarRoutes} />
+          </Switch>
         </Router>
       </AuthProvider>
     </ThemeProvider>
