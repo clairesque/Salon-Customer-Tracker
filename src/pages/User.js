@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import Typography from '@material-ui/core/Typography'
 import { Button, Container, Grid } from '@material-ui/core'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
 import ItemCard from '../components/Card'
 import { makeStyles } from '@material-ui/core/styles'
 import { AuthContext } from '../auth/auth'
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
 }))
+//enabled submit button
 function EnabledButton(props) {
   return (
     <Button
@@ -30,6 +32,7 @@ function EnabledButton(props) {
     </Button>
   )
 }
+//disabled submit button
 function DisabledButton(props) {
   return (
     <Button
@@ -43,15 +46,21 @@ function DisabledButton(props) {
     </Button>
   )
 }
+//user page class
 export default function User() {
-  const [error, setError] = React.useState(null)
-  const [items, setItems] = React.useState([])
-  const [customers, setCustomers] = React.useState([])
-  const [total, setTotal] = React.useState(0)
-  const { currentUser } = useContext(AuthContext)
+  const [error, setError] = React.useState(null) //on page load error log when fetching from heroku
+  const [items, setItems] = React.useState([]) //card state from Card.js
+  const [customers, setCustomers] = React.useState([]) //customers state to post to DB
+  const [total, setTotal] = React.useState(0) //total cost to post to DB
+  const [dialogBox, setOpen] = React.useState(false);//dialog box display state
+  const [dialogResponse, setMsg] = React.useState({
+    dialogHead:'',
+    dialogMsg: null
+  });//dialog box content incase of error or if success
+  const { currentUser } = useContext(AuthContext) 
 
   const classes = useStyles()
-
+  //fetch to load items from DB
   useEffect(() => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/Services`)
       .then((res) => res.json())
@@ -84,7 +93,6 @@ export default function User() {
   const getData = (data, sum) => {
     setCustomers(data)
     setTotal(sum)
-
   }
   const ButtonType = (props) => {
     if (customers.length >= 1) {
@@ -95,6 +103,8 @@ export default function User() {
       return <DisabledButton className={props.className} />
     }
   }
+
+
 
   const submitData = () => {
     let orders = {
@@ -112,8 +122,48 @@ export default function User() {
       },
     })
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        console.log(data)
+        setOpen(true)
+        setMsg({dialogHead: "Done", dialogMsg:`Added ${orders.services} at ${orders.time}`})
+      }).catch(function (error) { 
+        console.log("Error",error.message) 
+        setOpen(true)
+        setMsg({dialogHead: "Error", dialogMsg:error.message})
+
+      })
+
   }
+  const SubmitDialog = () => {
+  
+    const handleClose = () => {
+      setOpen(false);
+      window.location.reload()
+    };
+    return (
+      <div>
+        <Dialog
+          open={dialogBox}
+          aria-labelledby="responsive-dialog-title"
+          
+        >
+          <DialogTitle id="responsive-dialog-title" style = {{minWidth:500}}>{dialogResponse.dialogHead}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+             {dialogResponse.dialogMsg}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button variant='contained'
+              color='secondary' onClick={handleClose} autoFocus>
+              Return to Home
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
+
 
   if (error) {
     return (
@@ -145,6 +195,7 @@ export default function User() {
           <Grid className='center'>
             <ButtonType className={classes.submit} onClick={submitData} />
           </Grid>
+          <SubmitDialog />
         </Container>
       ) : (
         <Typography className='centered' color='textPrimary'>
