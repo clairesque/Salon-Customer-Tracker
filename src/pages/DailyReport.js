@@ -106,7 +106,7 @@ const DailyReport = (props) => {
               />
             </Grid>
           </Grid>
-          <div style={{ height: 450, width: '100%', margin: '10px auto' }}>
+          <div style={{ height: 575, width: '100%', margin: '10px auto' }}>
             {customers.item && (
               <DataGrid
                 checkboxSelection

@@ -124,7 +124,7 @@ const MonthlyReport = (props) => {
             </LocalizationProvider>
           </Grid>
 
-          <Container style={{ height: 450 }}>
+          <Container style={{ height: 575 }}>
             {customers.item && (
               <DataGrid
                 getRowId={(r) => r._id}
