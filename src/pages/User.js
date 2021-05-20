@@ -99,6 +99,7 @@ export default function User() {
   const submitData = () => {
     let orders = {
       date: date,
+      month: month,
       time: time,
       paid: total,
       services: customers,
