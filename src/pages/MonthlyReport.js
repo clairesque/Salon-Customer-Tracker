@@ -11,10 +11,10 @@ import {
   TextField,
   Grid,
 } from '@material-ui/core'
-import SignOut from '../components/SignOut'
 
 const useStyles = makeStyles((theme) => ({
   title: {
+    marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
     fontWeight: 'bold',
   },
@@ -107,14 +107,13 @@ const MonthlyReport = (props) => {
     <Container maxWidth='xs'>
       {currentUser.email.includes('admin') ? (
         <div style={{ height: 600, width: '100%' }}>
-          <SignOut />
           <Typography
             align='center'
             variant='h5'
             color='textPrimary'
             className={classes.title}
           >
-            Monthly Report for {month}
+            Monthly Report
           </Typography>
 
           <Grid className={classes.monthPicker}>

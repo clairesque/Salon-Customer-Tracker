@@ -4,7 +4,6 @@ import { Typography, Container, TextField, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { AuthContext } from '../auth/auth'
 import { Trash } from 'phosphor-react'
-import SignOut from '../components/SignOut'
 import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
@@ -109,7 +108,6 @@ const DailyReport = (props) => {
     <>
       {currentUser.email.includes('admin') ? (
         <Container maxWidth='xs'>
-          <SignOut />
           <Typography
             align='center'
             variant='h5'
