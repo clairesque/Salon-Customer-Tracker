@@ -17,6 +17,32 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
 }))
+function EnabledButton(props) {
+  return (
+    <Button
+      className={props.className}
+      variant='contained'
+      color='secondary'
+      onClick={props.onClick}
+      style={{ color: 'black' }}
+    >
+      Submit
+    </Button>
+  )
+}
+function DisabledButton(props) {
+  return (
+    <Button
+      className={props.className}
+      variant='contained'
+      color='secondary'
+      disabled
+      style={{ color: 'black' }}
+    >
+      Submit
+    </Button>
+  )
+}
 export default function User() {
   const [error, setError] = React.useState(null)
   const [items, setItems] = React.useState([])
@@ -52,6 +78,15 @@ export default function User() {
     setCustomers(data)
     setTotal(sum)
   }
+  const ButtonType = (props) => {
+    if (customers.length >= 1) {
+      return (
+        <EnabledButton onClick={props.onClick} className={props.className} />
+      )
+    } else {
+      return <DisabledButton className={props.className} />
+    }
+  }
 
   const submitData = () => {
     let orders = {
@@ -72,7 +107,11 @@ export default function User() {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>
+    return (
+      <Typography variant='h5' color='textPrimary' align='center'>
+        Error: {error.message}
+      </Typography>
+    )
   } else {
     return [
       currentUser.email.includes('user') ? (
@@ -95,14 +134,7 @@ export default function User() {
             />
           ))}
           <Grid className='center'>
-            <Button
-              variant='contained'
-              className={classes.submit}
-              style={{ color: 'black' }}
-              onClick={submitData}
-            >
-              Submit
-            </Button>
+            <ButtonType className={classes.submit} onClick={submitData} />
           </Grid>
         </Container>
       ) : (
