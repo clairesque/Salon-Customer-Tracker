@@ -71,9 +71,10 @@ const Login = ({ history }) => {
 
   const { currentUser } = useContext(AuthContext)
 
-  if (currentUser) {
+  if (currentUser && currentUser.email.includes('admin'))
+    return <Redirect to='/daily' />
+  else if (currentUser && currentUser.email.includes('user'))
     return <Redirect to='/user' />
-  }
 
   return (
     <Container component='main' maxWidth='xs' className={classes.login}>
