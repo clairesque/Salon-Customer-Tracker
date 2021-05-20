@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { AuthContext } from '../auth/auth'
 import { Trash } from 'phosphor-react'
 import SignOut from '../components/SignOut'
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -27,10 +28,15 @@ const columns = [
   { field: 'services', headerName: 'Services', width: 400 },
 ]
 
+let dateobj = new Date()
+let month = (dateobj.getMonth()+1).toString()
+let curr = (dateobj.getDate()).toString()+"-"+month+"-"+(dateobj.getFullYear()).toString()
+
 const DailyReport = (props) => {
   const classes = useStyles()
   const [customers, setCustomers] = useState([{ item: null }])
   const [deleted, setDeleted] = useState(false)
+  const [date, setDate] = useState("all")
   const [selection, setSelection] = useState([])
   const { currentUser } = useContext(AuthContext)
   const [dailyTot, setDailyTot] = useState([0])
@@ -65,7 +71,26 @@ const DailyReport = (props) => {
       })
     })
     setDeleted(!deleted)
+    setDate("all")
   }
+
+  const handleChangeDate = e => {
+    let newdate = moment((e.target.value)).format("DD-MM-YYYY")
+    setDate(e.target.value);
+    console.log(newdate)
+    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/`+newdate
+    fetch(apiUrl)
+      .then((res) => res.json())
+      .then((orders) => {
+        setCustomers({ item: orders })
+        let total = 0
+        orders.forEach((item) => {
+          total += item.paid
+        })
+        setDailyTot(total)
+      })
+    
+ };
 
   return (
     <>
@@ -78,9 +103,9 @@ const DailyReport = (props) => {
             color='textPrimary'
             className={classes.title}
           >
-            Daily Report
+            Daily Report - {date}
           </Typography>
-          {/* <Grid
+          <Grid
             container
             spacing={35}
             direction='row'
@@ -92,6 +117,9 @@ const DailyReport = (props) => {
                 id='sdate'
                 label='Date'
                 type='date'
+                defaultValue = {curr}
+                format = "dd/mm/yyyy"
+                onChange = {handleChangeDate}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -106,7 +134,7 @@ const DailyReport = (props) => {
                 }}
               />
             </Grid>
-          </Grid> */}
+          </Grid>
           <div style={{ height: 575, width: '100%', margin: '10px auto' }}>
             {customers.item && (
               <DataGrid
