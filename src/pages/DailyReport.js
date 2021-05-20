@@ -31,6 +31,7 @@ const columns = [
 const DailyReport = (props) => {
   const classes = useStyles()
   const [customers, setCustomers] = useState([{ item: null }])
+  const [deleted, setDeleted] = useState(false)
   const [selection, setSelection] = useState([])
   const { currentUser } = useContext(AuthContext)
   const [dailyTot, setDailyTot] = useState([0])
@@ -47,7 +48,7 @@ const DailyReport = (props) => {
         })
         setDailyTot(total)
       })
-  }, [customers])
+  }, [deleted])
 
   const deleteEntries = (selected) => {
     var delIds = Array.from(selected)
@@ -64,6 +65,7 @@ const DailyReport = (props) => {
         body: null,
       })
     })
+    setDeleted(!deleted)
   }
 
   return (
