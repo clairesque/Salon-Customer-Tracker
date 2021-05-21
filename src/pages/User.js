@@ -1,11 +1,18 @@
 import React, { useEffect, useContext } from 'react'
 import Typography from '@material-ui/core/Typography'
 import { Button, Container, Grid } from '@material-ui/core'
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core'
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
+} from '@material-ui/core'
 import ItemCard from '../components/Card'
 import { makeStyles } from '@material-ui/core/styles'
 import { AuthContext } from '../auth/auth'
 import SignOut from '../components/SignOut'
+import TextField from '@material-ui/core/TextField'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -24,9 +31,9 @@ function EnabledButton(props) {
     <Button
       className={props.className}
       variant='contained'
-      color='secondary'
+      color='primary'
       onClick={props.onClick}
-      style={{ color: 'black' }}
+      style={{ backgroundColor: '#a17aef', color: 'black' }}
     >
       Submit
     </Button>
@@ -52,12 +59,13 @@ export default function User() {
   const [items, setItems] = React.useState([]) //card state from Card.js
   const [customers, setCustomers] = React.useState([]) //customers state to post to DB
   const [total, setTotal] = React.useState(0) //total cost to post to DB
-  const [dialogBox, setOpen] = React.useState(false);//dialog box display state
+  const [dialogBox, setOpen] = React.useState(false) //dialog box display state
   const [dialogResponse, setMsg] = React.useState({
-    dialogHead:'',
-    dialogMsg: null
-  });//dialog box content incase of error or if success
-  const { currentUser } = useContext(AuthContext) 
+    dialogHead: '',
+    dialogMsg: null,
+  }) //dialog box content incase of error or if success
+  const [searchValue, setSearchValue] = React.useState('')
+  const { currentUser } = useContext(AuthContext)
 
   const classes = useStyles()
   //fetch to load items from DB
@@ -66,24 +74,34 @@ export default function User() {
       .then((res) => res.json())
       .then(
         (result) => {
-          setItems(result)
+          let filteredResults = []
+          for (var i = 0; i < result.length; i++) {
+            if (
+              result[i].Service.toLowerCase().includes(
+                searchValue.toLowerCase()
+              )
+            ) {
+              filteredResults.push(result[i])
+            }
+          }
+          setItems(filteredResults)
         },
         (error) => {
           setError(error)
         }
       )
-  }, [])
+  }, [searchValue])
 
   let dateTime = new Date()
-  var day = (dateTime.getDate()).toString()
-  var month = (dateTime.getMonth()+1).toString()
-  if (month.length===1){
-    month= "0"+month
+  var day = dateTime.getDate().toString()
+  var month = (dateTime.getMonth() + 1).toString()
+  if (month.length === 1) {
+    month = '0' + month
   }
-  if (day.length===1){
-    day= "0"+day
+  if (day.length === 1) {
+    day = '0' + day
   }
-  var date = day+"-"+month+"-"+(dateTime.getFullYear()).toString()
+  var date = day + '-' + month + '-' + dateTime.getFullYear().toString()
   var time = dateTime.toLocaleTimeString('en-US', {
     hour12: true,
     hour: 'numeric',
@@ -94,6 +112,10 @@ export default function User() {
     setCustomers(data)
     setTotal(sum)
   }
+  const getSearchValue = (e) => {
+    setSearchValue(e.target.value)
+  }
+
   const ButtonType = (props) => {
     if (customers.length >= 1) {
       return (
@@ -103,8 +125,6 @@ export default function User() {
       return <DisabledButton className={props.className} />
     }
   }
-
-
 
   const submitData = () => {
     let orders = {
@@ -123,47 +143,45 @@ export default function User() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         setOpen(true)
-        setMsg({dialogHead: "Done", dialogMsg:`Added ${orders.services} at ${orders.time}`})
-      }).catch(function (error) { 
-        console.log("Error",error.message) 
-        setOpen(true)
-        setMsg({dialogHead: "Error", dialogMsg:error.message})
-
+        setMsg({
+          dialogHead: 'Done',
+          dialogMsg: `Added ${orders.services} at ${orders.time}`,
+        })
       })
-
+      .catch(function (error) {
+        setOpen(true)
+        setMsg({ dialogHead: 'Error', dialogMsg: error.message })
+      })
   }
   const SubmitDialog = () => {
-  
     const handleClose = () => {
-      setOpen(false);
+      setOpen(false)
       window.location.reload()
-    };
+    }
     return (
       <div>
-        <Dialog
-          open={dialogBox}
-          aria-labelledby="responsive-dialog-title"
-          
-        >
-          <DialogTitle id="responsive-dialog-title" style = {{minWidth:500}}>{dialogResponse.dialogHead}</DialogTitle>
+        <Dialog open={dialogBox} aria-labelledby='responsive-dialog-title'>
+          <DialogTitle id='responsive-dialog-title' style={{ minWidth: 500 }}>
+            {dialogResponse.dialogHead}
+          </DialogTitle>
           <DialogContent>
-            <DialogContentText>
-             {dialogResponse.dialogMsg}
-            </DialogContentText>
+            <DialogContentText>{dialogResponse.dialogMsg}</DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button variant='contained'
-              color='secondary' onClick={handleClose} autoFocus>
+            <Button
+              variant='contained'
+              color='secondary'
+              onClick={handleClose}
+              autoFocus
+            >
               Return to Home
             </Button>
           </DialogActions>
         </Dialog>
       </div>
-    );
+    )
   }
-
 
   if (error) {
     return (
@@ -184,6 +202,12 @@ export default function User() {
           >
             Add Customer
           </Typography>
+          <TextField
+            label='Search'
+            margin='normal'
+            variant='outlined'
+            onChange={getSearchValue}
+          />
           {items.map((item) => (
             <ItemCard
               key={item._id}
