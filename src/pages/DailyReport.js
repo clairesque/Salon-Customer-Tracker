@@ -65,7 +65,6 @@ const DailyReport = (props) => {
           total += item.paid
         })
         setDailyTot(total)
-        console.log(curr)
       })
   }, [deleted] || [date])
 
@@ -92,7 +91,6 @@ const DailyReport = (props) => {
   const handleChangeDate = (e) => {
     let newdate = moment(e.target.value).format('DD-MM-YYYY')
     setDate(e.target.value)
-    console.log(newdate)
     const apiUrl =
       `${process.env.REACT_APP_BACKEND_URL}/Customers/daily/` + newdate
     fetch(apiUrl)

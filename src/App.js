@@ -13,26 +13,6 @@ import NavBar from './components/NavBar'
 import Dashboard from './pages/Dashboard'
 
 function App() {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        typography: {
-          fontWeight: 400,
-          letterSpacing: 1,
-          textTransform: 'none',
-          button: {
-            fontWeight: 400,
-            letterSpacing: 1,
-            textTransform: 'none',
-          },
-        },
-        palette: {
-          type: prefersDarkMode ? 'dark' : 'light',
-        },
-      }),
-    [prefersDarkMode]
-  )
   const NavBarRoutes = () => (
     <>
       <PrivateRoute exact path='/daily' component={DailyReport} />
@@ -42,7 +22,7 @@ function App() {
     </>
   )
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider>
       <AuthProvider>
         <Router>
           <Switch>
