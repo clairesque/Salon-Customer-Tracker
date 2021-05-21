@@ -69,6 +69,7 @@ const DailyReport = (props) => {
   }, [deleted] || [date])
 
   const deleteEntries = (selected) => {
+    setDeleted(!deleted)
     var delIds = Array.from(selected)
     const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers`
     delIds.forEach((element) => {
@@ -83,16 +84,14 @@ const DailyReport = (props) => {
         body: null,
       })
     })
-    setDeleted(!deleted)
-    setDeleted(!deleted)
     setDate(curr)
   }
 
-  const handleChangeDate = (e) => {
-    let newdate = moment(e.target.value).format('DD-MM-YYYY')
-    setDate(e.target.value)
-    const apiUrl =
-      `${process.env.REACT_APP_BACKEND_URL}/Customers/daily/` + newdate
+  const handleChangeDate = e => {
+    let newdate = moment((e.target.value)).format("DD-MM-YYYY")
+    setDate(newdate);
+    console.log(newdate)
+    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/daily/`+newdate
     fetch(apiUrl)
       .then((res) => res.json())
       .then((orders) => {
