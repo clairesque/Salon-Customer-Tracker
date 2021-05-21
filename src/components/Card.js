@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import {
   Typography,
   CardActions,
-  Container,
   Card,
   CardContent,
   FormControl,
@@ -65,8 +64,8 @@ function ItemCard(props) {
   const classes = useStyles()
 
   return (
-    <Container component='main'>
-      <div onClick={handleChange}>
+    
+      <div onClick={handleChange} style={{marginBottom:15}}>
         <Card
           className={checkVal ? classes.selected : classes.root}
           variant='elevation'
@@ -89,7 +88,6 @@ function ItemCard(props) {
           </CardContent>
         </Card>
       </div>
-    </Container>
   )
 }
 export default ItemCard
