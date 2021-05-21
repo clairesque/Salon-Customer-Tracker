@@ -4,7 +4,7 @@ import { Typography, Container, TextField, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { AuthContext } from '../auth/auth'
 import { Trash } from 'phosphor-react'
-import moment from 'moment';
+import moment from 'moment'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },
+  container: {
+    height: '80%'
+  }
 }))
 
 const columns = [
@@ -29,17 +32,17 @@ const columns = [
 ]
 
 let dateobj = new Date()
-let month = (dateobj.getMonth()+1).toString()
+let month = (dateobj.getMonth() + 1).toString()
 let day = dateobj.getDate().toString()
 
-if (month.length == 1){
-  month = "0"+month
+if (month.length == 1) {
+  month = '0' + month
 }
-if (day.length == 1){
-  day = "0"+day
+if (day.length == 1) {
+  day = '0' + day
 }
 
-let curr = day+"-"+month+"-"+(dateobj.getFullYear()).toString()
+let curr = day + '-' + month + '-' + dateobj.getFullYear().toString()
 
 const DailyReport = (props) => {
   const classes = useStyles()
@@ -51,7 +54,8 @@ const DailyReport = (props) => {
   const [dailyTot, setDailyTot] = useState([0])
 
   useEffect(() => {
-    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/daily/`+curr
+    const apiUrl =
+      `${process.env.REACT_APP_BACKEND_URL}/Customers/daily/` + curr
     fetch(apiUrl)
       .then((res) => res.json())
       .then((orders) => {
@@ -62,9 +66,8 @@ const DailyReport = (props) => {
         })
         setDailyTot(total)
         console.log(curr)
-
       })
-  }, [deleted]||[date])
+  }, [deleted] || [date])
 
   const deleteEntries = (selected) => {
     var delIds = Array.from(selected)
@@ -86,11 +89,12 @@ const DailyReport = (props) => {
     setDate(curr)
   }
 
-  const handleChangeDate = e => {
-    let newdate = moment((e.target.value)).format("DD-MM-YYYY")
-    setDate(e.target.value);
+  const handleChangeDate = (e) => {
+    let newdate = moment(e.target.value).format('DD-MM-YYYY')
+    setDate(e.target.value)
     console.log(newdate)
-    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/daily/`+newdate
+    const apiUrl =
+      `${process.env.REACT_APP_BACKEND_URL}/Customers/daily/` + newdate
     fetch(apiUrl)
       .then((res) => res.json())
       .then((orders) => {
@@ -101,13 +105,12 @@ const DailyReport = (props) => {
         })
         setDailyTot(total)
       })
-    
- };
+  }
 
   return (
     <>
       {currentUser.email.includes('admin') ? (
-        <Container maxWidth='xs'>
+        <Container className={classes.container} maxWidth='xs'>
           <Typography
             align='center'
             variant='h5'
@@ -128,9 +131,9 @@ const DailyReport = (props) => {
                 id='sdate'
                 label='Date'
                 type='date'
-                defaultValue = {curr}
-                format = "dd/mm/yyyy"
-                onChange = {handleChangeDate}
+                defaultValue={curr}
+                format='dd/mm/yyyy'
+                onChange={handleChangeDate}
                 InputLabelProps={{
                   shrink: true,
                 }}

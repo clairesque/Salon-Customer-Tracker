@@ -5,12 +5,7 @@ import AdapterDateFns from '@material-ui/lab/AdapterDateFns'
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider'
 import DatePicker from '@material-ui/lab/DatePicker'
 import { AuthContext } from '../auth/auth'
-import {
-  Typography,
-  Container,
-  TextField,
-  Grid,
-} from '@material-ui/core'
+import { Typography, Container, TextField, Grid } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -28,24 +23,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-// const columns = [
-//     { field: 'Date', headerName: 'Date', width: 160 },
-//     { field: 'Amount', headerName: 'Amount', width: 160 },
-// ];
-
 const columns = [
-  { field: 'date', headerName: 'Date', width:200},
-  { field: 'paid', headerName: 'Paid'},
+  { field: 'date', headerName: 'Date', width: 200 },
+  { field: 'paid', headerName: 'Paid' },
 ]
 
-var currmonth = (parseInt(new Date().getMonth())+1).toString()
-if (currmonth.length === 1){
-  currmonth = "0"+currmonth
+var currmonth = (parseInt(new Date().getMonth()) + 1).toString()
+if (currmonth.length === 1) {
+  currmonth = '0' + currmonth
 }
 
-const MonthlyReport = (props) => {
-  // const [month, setMonth] = React.useState('');
-  // const [open, setOpen] = React.useState(false);
+const MonthlyReport = () => {
   const [customers, setCustomers] = useState([{ item: null }])
   const { currentUser } = useContext(AuthContext)
   const [monthlyTot, setMonthlyTot] = useState([0])
@@ -54,12 +42,27 @@ const MonthlyReport = (props) => {
   const [value, setValue] = React.useState(new Date())
 
   useEffect(() => {
-    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/monthly/`+month
+    const apiUrl =
+      `${process.env.REACT_APP_BACKEND_URL}/Customers/monthly/` + month
     fetch(apiUrl)
       .then((res) => res.json())
       .then((orders) => {
-        setCustomers({ item: orders })
-
+        let finalOrders = {}
+        orders.forEach((element) => {
+          if (element.date in finalOrders) {
+            finalOrders[element.date] += element.paid
+          } else {
+            finalOrders[element.date] = element.paid
+          }
+        })
+        let finalCustomers = []
+        for (var i in finalOrders) {
+          let date = i
+          let paid = finalOrders[i]
+          let _id = '_' + Math.random().toString(36).substr(2, 9)
+          finalCustomers.push({ _id: _id, date: date, paid: paid })
+        }
+        setCustomers({ item: finalCustomers })
         let tot = 0
         orders.forEach((item) => {
           tot += item.paid
@@ -71,37 +74,13 @@ const MonthlyReport = (props) => {
 
   const changeMonth = (date) => {
     date = new Date(date)
-    var selected = (parseInt(date.getMonth())+1).toString()
-    if (selected.length === 1){
-      selected = "0"+selected
+    var selected = (parseInt(date.getMonth()) + 1).toString()
+    if (selected.length === 1) {
+      selected = '0' + selected
     }
     setMonth(selected)
     setMonth(selected)
-    console.log(selected+" "+currmonth)
   }
-  
-
-  //commented all these for faichan UwU - anonymous
-  // useEffect(() => {
-  //   const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Admin`
-  //   fetch(apiUrl)
-  //     .then((res) => res.json())
-  //     .then((orders) => {
-  //       setCustomers({ item: orders })
-  //     })
-  // }, [setCustomers])
-
-  // const handleChange = (event) => {
-  //     setMonth(event.target.value);
-  // };
-
-  // const handleClose = () => {
-  //     setOpen(false);
-  // };
-
-  // const handleOpen = () => {
-  //     setOpen(true);
-  // };
 
   return (
     <Container maxWidth='xs'>

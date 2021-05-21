@@ -10,6 +10,7 @@ import User from './pages/User'
 import { AuthProvider } from './auth/auth'
 import PrivateRoute from './components/PrivateRoute'
 import NavBar from './components/NavBar'
+import Dashboard from './pages/Dashboard'
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
@@ -36,6 +37,7 @@ function App() {
     <>
       <PrivateRoute exact path='/daily' component={DailyReport} />
       <PrivateRoute exact path='/monthly' component={MonthlyReport} />
+      <PrivateRoute exact path='/dashboard' component={Dashboard} />
       <NavBar />
     </>
   )
