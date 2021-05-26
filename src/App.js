@@ -11,6 +11,7 @@ import { AuthProvider } from './auth/auth'
 import PrivateRoute from './components/PrivateRoute'
 import NavBar from './components/NavBar'
 import Dashboard from './pages/Dashboard'
+import Add from './pages/Add'
 
 function App() {
   const NavBarRoutes = () => (
@@ -18,6 +19,7 @@ function App() {
       <PrivateRoute exact path='/daily' component={DailyReport} />
       <PrivateRoute exact path='/monthly' component={MonthlyReport} />
       <PrivateRoute exact path='/dashboard' component={Dashboard} />
+      <PrivateRoute exact path='/add' component={Add} />
       <NavBar />
     </>
   )

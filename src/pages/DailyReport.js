@@ -7,6 +7,14 @@ import { Trash } from 'phosphor-react'
 import moment from 'moment'
 
 const useStyles = makeStyles((theme) => ({
+  dgridStyle: {
+    '& .timeHeader, & .paidHeader, & .servicesHeader': {
+      backgroundColor: '#B8B8FF',
+      color: "black",
+      fontWeight: 900
+    },
+  },
+  
   title: {
     marginBottom: theme.spacing(5),
     fontWeight: 'bold',
@@ -15,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
+    color: "red",
   },
   monthlyText: {
     marginTop: theme.spacing(2),
@@ -22,13 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     height: '80%'
-  }
+  },
 }))
 
 const columns = [
-  { field: 'time', headerName: 'Time', width: 100 },
-  { field: 'paid', headerName: 'Paid', width: 90 },
-  { field: 'services', headerName: 'Services', width: 400 },
+  { field: 'time', headerName: 'Time', width: 100, headerClassName: 'timeHeader',
+  headerAlign: 'center', },
+  { field: 'paid', headerName: 'Paid', width: 90, headerClassName: 'paidHeader',
+  headerAlign: 'center', },
+  { field: 'services', headerName: 'Services', width: 400, headerClassName: "servicesHeader" },
 ]
 
 let dateobj = new Date()
@@ -90,7 +101,6 @@ const DailyReport = (props) => {
   const handleChangeDate = e => {
     let newdate = moment((e.target.value)).format("DD-MM-YYYY")
     setDate(newdate);
-    console.log(newdate)
     const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/daily/`+newdate
     fetch(apiUrl)
       .then((res) => res.json())
@@ -113,8 +123,9 @@ const DailyReport = (props) => {
             variant='h5'
             color='textPrimary'
             className={classes.title}
+            marginTop={2}
           >
-            Daily Report - {date}
+            Daily Report ({date})
           </Typography>
           <Grid
             container
@@ -146,9 +157,10 @@ const DailyReport = (props) => {
               />
             </Grid>
           </Grid>
-          <div style={{ height: 575, width: '100%', margin: '10px auto' }}>
+          <div style={{ height: 550, width: '100%', margin: '10px auto' }}>
             {customers.item && (
               <DataGrid
+                className={classes.dgridStyle}
                 checkboxSelection
                 getRowId={(r) => r._id}
                 rows={customers.item}
