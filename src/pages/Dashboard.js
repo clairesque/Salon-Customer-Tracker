@@ -55,7 +55,7 @@ const Dashboard = () => {
         setDailyData({ item: orders })
       })
     const apiUrl2 =
-      `${process.env.REACT_APP_BACKEND_URL}/Customers/monthly/` + month
+      `${process.env.REACT_APP_BACKEND_URL}/Customers/monthly/` + month+"-"+dateobj.getFullYear()
     fetch(apiUrl2)
       .then((res) => res.json())
       .then((orders) => {
