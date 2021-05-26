@@ -8,6 +8,14 @@ import { AuthContext } from '../auth/auth'
 import { Typography, Container, TextField, Grid } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
+
+  dgridStyle: {
+    '& .dateHeader, & .paidHeader': {
+      backgroundColor: '#B8B8FF',
+      color: "black"
+    },
+  },
+
   title: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
@@ -24,26 +32,35 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-  { field: 'date', headerName: 'Date', width: 200 },
-  { field: 'paid', headerName: 'Paid' },
+  { field: 'date', headerName: 'Date', width: 200, headerClassName: 'dateHeader',
+  headerAlign: 'center', },
+  { field: 'paid', headerName: 'Paid', width: 150, headerClassName: 'paidHeader',
+  headerAlign: 'center', },
 ]
-
+const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
 var currmonth = (parseInt(new Date().getMonth()) + 1).toString()
 if (currmonth.length === 1) {
   currmonth = '0' + currmonth
 }
+
+var curryear = (new Date().getFullYear()).toString()
+let theUrl =
+      `${process.env.REACT_APP_BACKEND_URL}/Customers/monthly/` + currmonth+"-"+curryear
 
 const MonthlyReport = () => {
   const [customers, setCustomers] = useState([{ item: null }])
   const { currentUser } = useContext(AuthContext)
   const [monthlyTot, setMonthlyTot] = useState([0])
   const [month, setMonth] = useState(currmonth)
+  const [year, setYear] = useState(curryear)
+  const [url, setUrl] = useState(theUrl)
   const classes = useStyles()
   const [value, setValue] = React.useState(new Date())
 
   useEffect(() => {
-    const apiUrl =
-      `${process.env.REACT_APP_BACKEND_URL}/Customers/monthly/` + month
+    const apiUrl = url
     fetch(apiUrl)
       .then((res) => res.json())
       .then((orders) => {
@@ -70,16 +87,24 @@ const MonthlyReport = () => {
 
         setMonthlyTot(tot)
       })
-  }, [month])
+  },[url])
 
-  const changeMonth = (date) => {
+ const changeMonth = (date) => {
     date = new Date(date)
     var selected = (parseInt(date.getMonth()) + 1).toString()
+    var selectedYear = (date.getFullYear()).toString()
     if (selected.length === 1) {
       selected = '0' + selected
     }
-    setMonth(selected)
-    setMonth(selected)
+    let newUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/monthly/`+selected+"-"+selectedYear
+    componentDidMount(selectedYear,selected,newUrl)
+  }
+
+  const componentDidMount = (year,month,newUrl) =>{
+    
+    setYear(year)
+    setMonth(month)
+    setUrl(newUrl)
   }
 
   return (
@@ -92,21 +117,21 @@ const MonthlyReport = () => {
             color='textPrimary'
             className={classes.title}
           >
-            Monthly Report
+            Monthly Report ({monthNames[parseInt(month-1)]}-{year})
           </Typography>
 
           <Grid className={classes.monthPicker}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                views={['month']}
+                views={['month', 'year']}
                 label='Pick a Month'
-                minDate={new Date('2021-01-01')}
-                maxDate={new Date('2023-12-01')}
+                minDate={new Date('2019-01-01')}
+                maxDate={new Date('2099-12-01')}
                 value={value}
                 onChange={(newValue) => {
                   setValue(newValue)
                   changeMonth(newValue)
-                }}
+                }}                
                 inputStyle={{ textAlign: 'center' }}
                 renderInput={(params) => (
                   <TextField
@@ -120,16 +145,17 @@ const MonthlyReport = () => {
             </LocalizationProvider>
           </Grid>
 
-          <Container style={{ height: 575 }}>
+          <div style={{ height: 550, width: '100%', margin: '10px auto' }}>
             {customers.item && (
               <DataGrid
+                className = {classes.dgridStyle}
                 getRowId={(r) => r._id}
                 rows={customers.item}
                 columns={columns}
                 pageSize={9}
               />
             )}
-          </Container>
+          </div>
 
           <Grid className={`center ${classes.monthlyText}`}>
             <Typography color='textPrimary'>

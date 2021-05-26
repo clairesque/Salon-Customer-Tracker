@@ -101,7 +101,8 @@ export default function User() {
   if (day.length === 1) {
     day = '0' + day
   }
-  var date = day + '-' + month + '-' + dateTime.getFullYear().toString()
+  var year = (dateTime.getFullYear()).toString()
+  var date = day + '-' + month + '-' + year
   var time = dateTime.toLocaleTimeString('en-US', {
     hour12: true,
     hour: 'numeric',
@@ -129,7 +130,7 @@ export default function User() {
   const submitData = () => {
     let orders = {
       date: date,
-      month: month,
+      monthyear: month+"-"+year,
       time: time,
       paid: total,
       services: customers,
@@ -175,7 +176,7 @@ export default function User() {
               onClick={handleClose}
               autoFocus
             >
-              Return to Home
+              Close
             </Button>
           </DialogActions>
         </Dialog>

@@ -42,3 +42,32 @@
   justify-content: center;
   align-items: center;
 }
+
+.MuiDataGrid-row:nth-child(odd) {
+  background-color: #c4f5fc;
+  font-size: 15px;
+}
+
+.MuiDataGrid-row:nth-child(even) {
+  background-color: #F8F7FF;
+  font-size: 15px;
+}
+
+.MuiDataGrid-cellCheckbox	{
+  width: 0;
+}
+
+.MuiDataGrid-columnHeaderCheckbox{
+  background-color: black;
+}
+
+.MuiDataGrid-root{
+  background-color: white;
+}
+
+/* 
+.root .MuiDataGrid-columnHeaderWrapper{
+  background-color: '#9381FF';
+  color: #F8F7FF;
+  
+} */

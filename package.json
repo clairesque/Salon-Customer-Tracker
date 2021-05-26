@@ -27,6 +27,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-spinners": "^0.10.6",
+    "react-tsparticles": "^1.27.0",
     "recharts": "^2.0.9",
     "semantic-ui-react": "^2.0.3",
     "web-vitals": "^1.0.1",
