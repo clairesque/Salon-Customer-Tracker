@@ -44,13 +44,17 @@
 }
 
 .MuiDataGrid-row:nth-child(odd) {
-  background-color: #c4f5fc;
+  background-color: #e9f2f9;
   font-size: 15px;
 }
 
 .MuiDataGrid-row:nth-child(even) {
-  background-color: #F8F7FF;
+  background-color: #FFF;
   font-size: 15px;
+}
+
+.MuiDataGrid-root .MuiDataGrid-iconSeparator {
+  display: none;
 }
 
 .MuiDataGrid-cellCheckbox	{

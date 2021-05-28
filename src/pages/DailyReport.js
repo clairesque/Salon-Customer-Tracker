@@ -7,14 +7,6 @@ import { Trash } from 'phosphor-react'
 import moment from 'moment'
 
 const useStyles = makeStyles((theme) => ({
-  dgridStyle: {
-    '& .timeHeader, & .paidHeader, & .servicesHeader': {
-      backgroundColor: '#B8B8FF',
-      color: "black",
-      fontWeight: 900
-    },
-  },
-  
   title: {
     marginBottom: theme.spacing(5),
     fontWeight: 'bold',
@@ -23,23 +15,45 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
-    color: "red",
+    color: 'red',
   },
   monthlyText: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
   },
   container: {
-    height: '80%'
+    height: '80%',
   },
 }))
 
 const columns = [
-  { field: 'time', headerName: 'Time', width: 100, headerClassName: 'timeHeader',
-  headerAlign: 'center', },
-  { field: 'paid', headerName: 'Paid', width: 90, headerClassName: 'paidHeader',
-  headerAlign: 'center', },
-  { field: 'services', headerName: 'Services', width: 400, headerClassName: "servicesHeader" },
+  {
+    field: 'time',
+    headerName: 'Time',
+    width: 100,
+    headerClassName: 'timeHeader',
+    headerAlign: 'center',
+  },
+  {
+    field: 'barber',
+    headerName: 'Barber',
+    width: 100,
+    headerClassName: 'timeHeader',
+    headerAlign: 'center',
+  },
+  {
+    field: 'paid',
+    headerName: 'Paid',
+    width: 90,
+    headerClassName: 'paidHeader',
+    headerAlign: 'center',
+  },
+  {
+    field: 'services',
+    headerName: 'Service(s)',
+    width: 400,
+    headerClassName: 'servicesHeader',
+  },
 ]
 
 let dateobj = new Date()
@@ -98,10 +112,11 @@ const DailyReport = (props) => {
     setDate(curr)
   }
 
-  const handleChangeDate = e => {
-    let newdate = moment((e.target.value)).format("DD-MM-YYYY")
-    setDate(newdate);
-    const apiUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/daily/`+newdate
+  const handleChangeDate = (e) => {
+    let newdate = moment(e.target.value).format('DD-MM-YYYY')
+    setDate(newdate)
+    const apiUrl =
+      `${process.env.REACT_APP_BACKEND_URL}/Customers/daily/` + newdate
     fetch(apiUrl)
       .then((res) => res.json())
       .then((orders) => {
@@ -121,7 +136,6 @@ const DailyReport = (props) => {
           <Typography
             align='center'
             variant='h5'
-            color='textPrimary'
             className={classes.title}
             marginTop={2}
           >
@@ -175,7 +189,7 @@ const DailyReport = (props) => {
             )}
           </div>
           <Grid className={`center ${classes.monthlyText}`}>
-            <Typography color='textPrimary'>
+            <Typography>
               <span style={{ fontWeight: 'bold' }}> Total: </span>{' '}
               {dailyTot.toLocaleString('en-US', {
                 style: 'currency',
@@ -185,7 +199,7 @@ const DailyReport = (props) => {
           </Grid>
         </Container>
       ) : (
-        <Typography className='centered' color='textPrimary'>
+        <Typography className='centered'>
           You do not have permissions to access this page.
         </Typography>
       )}
