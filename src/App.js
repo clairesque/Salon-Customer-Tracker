@@ -2,7 +2,6 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css'
 import { createTheme, ThemeProvider } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Login from './pages/Login'
 import DailyReport from './pages/DailyReport'
 import MonthlyReport from './pages/MonthlyReport'
@@ -14,6 +13,24 @@ import Dashboard from './pages/Dashboard'
 import Add from './pages/Add'
 
 function App() {
+  const theme = createTheme({
+    palette: {
+      background: {
+        default: '#e9f2f9',
+      },
+      primary: {
+        main: '#0a1f4d',
+        white: '#eef3f1'
+      },
+      secondary: {
+        main: '#645ad7',
+      },
+      tertiary: {
+        main: '#818181',
+      },
+    },
+  })
+
   const NavBarRoutes = () => (
     <>
       <PrivateRoute exact path='/daily' component={DailyReport} />
@@ -24,7 +41,7 @@ function App() {
     </>
   )
   return (
-    <ThemeProvider>
+    <ThemeProvider theme={theme}>
       <AuthProvider>
         <Router>
           <Switch>
