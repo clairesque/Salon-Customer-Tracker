@@ -15,14 +15,19 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '500',
     margin: 5,
     height: '5em',
-    borderRadius: '3%',
+    borderRadius: '10px',
+    color: theme.palette.primary.main,
+  },
+  checkbox: {
+      color: theme.palette.primary.main,
   },
   selected: {
     minWidth: '500',
     height: '5em',
     margin: 5,
-    backgroundColor: theme.palette.info.light,
-    borderRadius: '3%',
+    backgroundColor: theme.palette.secondary.main,
+    borderRadius: '10px',
+    color: theme.palette.primary.white,
   },
   title: {
     fontSize: 50,
@@ -64,30 +69,30 @@ function ItemCard(props) {
   const classes = useStyles()
 
   return (
-    
-      <div onClick={handleChange} style={{marginBottom:15}}>
-        <Card
-          className={checkVal ? classes.selected : classes.root}
-          variant='elevation'
-        >
-          <CardActions disableSpacing style={{ float: 'right' }}>
-            <FormControl component='fieldset' className={classes.formControl}>
-              <FormGroup>
-                <Checkbox
-                  className='checkbox'
-                  checked={checkVal}
-                  name={propsName}
-                  style={{ color: 'black' }}
-                />
-              </FormGroup>
-            </FormControl>
-          </CardActions>
-          <CardContent>
-            <Typography fontWeight='fontWeightBold'>{propsName}</Typography>
-            <Typography>{propsPrice} AED</Typography>
-          </CardContent>
-        </Card>
-      </div>
+    <div onClick={handleChange} style={{ marginBottom: 15 }}>
+      <Card
+        className={checkVal ? classes.selected : classes.root}
+        variant='elevation'
+      >
+        <CardActions disableSpacing style={{ float: 'right' }}>
+          <FormControl component='fieldset' className={classes.formControl}>
+            <FormGroup>
+              <Checkbox
+                className={classes.checkbox}
+                checked={checkVal}
+                name={propsName}
+              />
+            </FormGroup>
+          </FormControl>
+        </CardActions>
+        <CardContent>
+          <Typography fontWeight='fontWeightBold'>
+            {propsName}
+          </Typography>
+          <Typography>{propsPrice} AED</Typography>
+        </CardContent>
+      </Card>
+    </div>
   )
 }
 export default ItemCard

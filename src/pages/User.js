@@ -15,15 +15,28 @@ import SignOut from '../components/SignOut'
 import TextField from '@material-ui/core/TextField'
 
 const useStyles = makeStyles((theme) => ({
+  main: {
+    backgroundColor: '#191919',
+  },
   title: {
     marginBottom: theme.spacing(2),
     fontWeight: 'bold',
+    color: theme.palette.primary.main
+  },
+  input: {
+    color: theme.palette.primary.main,
   },
   submit: {
-    width: '88%',
+    width: '100%',
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(2),
+    backgroundColor: theme.palette.secondary.main,
+    textTransform: 'none',
+    fontWeight: 'bold'
   },
+  search: {
+    width: '21em'
+  }
 }))
 //enabled submit button
 function EnabledButton(props) {
@@ -33,7 +46,6 @@ function EnabledButton(props) {
       variant='contained'
       color='primary'
       onClick={props.onClick}
-      style={{ backgroundColor: '#a17aef', color: 'black' }}
     >
       Submit
     </Button>
@@ -127,7 +139,7 @@ export default function User() {
     }
   }
 
-  const barberName = currentUser.email.includes('userm') ? 'Mohammed' : 'Binoy'
+  const barberName = currentUser.email.includes('userm') ? 'Mohd' : 'Binoy'
 
   const submitData = () => {
     let orders = {
@@ -207,9 +219,16 @@ export default function User() {
             Add Customer
           </Typography>
           <TextField
-            label='Search'
+            label='Search for a service...'
             margin='normal'
             variant='outlined'
+            InputLabelProps={{
+              style: { color: '#818181' },
+            }}
+            className={classes.search}
+            InputProps={{
+              className: classes.input,
+            }}
             onChange={getSearchValue}
           />
           {items.map((item) => (
