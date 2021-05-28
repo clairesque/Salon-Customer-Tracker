@@ -127,6 +127,8 @@ export default function User() {
     }
   }
 
+  const barberName = currentUser.email.includes('userm') ? 'Mohammed' : 'Binoy'
+
   const submitData = () => {
     let orders = {
       date: date,
@@ -134,6 +136,7 @@ export default function User() {
       time: time,
       paid: total,
       services: customers,
+      barber: barberName
     }
     fetch(`${process.env.REACT_APP_BACKEND_URL}/Customers`, {
       method: 'POST',
