@@ -11,36 +11,53 @@ import Container from '@material-ui/core/Container'
 import { withRouter, Redirect } from 'react-router'
 import app from '../auth/config'
 import { AuthContext } from '../auth/auth'
-import Particles from "react-tsparticles";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    fontWeight: 'bold',
+    letterSpacing: '1',
+    textTransform: 'none',
+  },
   login: {
     display: 'flex',
-    position: "absolute",
+    position: 'absolute',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    textAlign: "center",
+  },
+  text: {
+    fontWeight: 'bold',
+    color: theme.palette.primary.main,
   },
   paper: {
     display: 'flex',
-    margin: "10px auto",
+    margin: '10px auto',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: '#a17aef',
+    backgroundColor: theme.palette.secondary.main,
+  },
+  lock: {
+    color: theme.palette.primary.white,
+  },
+  input: {
+    color: theme.palette.primary.main,
   },
   form: {
     width: '100%',
-    marginTop: theme.spacing(1),
+    marginTop: '5%'
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    backgroundColor: '#a17aef',
+    color: theme.palette.primary.white,
+    fontWeight: 'bold',
+    fontSize: 15,
+    backgroundColor: theme.palette.secondary.main,
+    textTransform: 'none',
   },
 }))
 
@@ -78,86 +95,14 @@ const Login = ({ history }) => {
 
   return (
     <>
-      {/* THIS IS THE BG ANIMATION, HARD REFRESH AFTER CHANGE TO SEE THEM */}
-      <Particles
-        style = {{zIndex: "-999", position: "absolute", width: "100%", height: "100%"}}
-        id="tsparticles"
-        options={{
-          background: {
-            color: {
-              value: "#F8F7FF",
-            },
-          },
-          fpsLimit: 60,         //initially was 60 fps, didnt have issues when it was 40 as well
-          interactivity: {
-            detectsOn: "canvas",
-            events: {
-
-              onClick: {
-                enable: true,
-                mode: "push",
-              },
-              resize: true,
-            },
-            modes: {
-              bubble: {
-                distance: 400,
-                duration: 2,
-                opacity: 0.8,
-                size: 40,
-              },
-              push: {
-                quantity: 4,
-              },
-            },
-          },
-          particles: {
-            color: {
-              // value: ["#9381FF","#FFD8BE", "#B8B8FF"],
-              value: ["#9381FF", "#B8B8FF"], //change particle colors or add colors here
-            },
-            collisions: {
-              enable: true,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outMode: "bounce",
-              random: false,
-              speed: 1,     //increase speed here, i made it slow so it isnt annoying 
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                value_area: 800,
-              },
-              value: 80,
-            },
-            opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: "circle",
-              // type: ["square","triangle"], //i prefer circles myself
-            },
-            size: {
-              random: true,
-              value: 60, //even 50 is coo
-            },
-          },
-          detectRetina: true,
-        }}
-      />
-    
-      <Container component='main' maxWidth='xs' style = {{zIndex: "9999"}}className={classes.login}>
+      <Container component='main' maxWidth='xs' className={classes.login}>
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockSimple weight='fill' size={20} />
+            <LockSimple weight='fill' size={20} className={classes.lock} />
           </Avatar>
-          <Typography component='h1' variant='h5'>
-            Log In
+          <Typography className={classes.text} component='h1' variant='h5'>
+            Login to your account
           </Typography>
           <form className={classes.form} onSubmit={handleLogin} noValidate>
             <TextField
@@ -166,6 +111,12 @@ const Login = ({ history }) => {
               required
               fullWidth
               id='email'
+              InputLabelProps={{
+                style: { color: '#818181' },
+              }}
+              InputProps={{
+                className: classes.input,
+              }}
               label='Username'
               name='username'
               autoComplete='username'
@@ -177,6 +128,12 @@ const Login = ({ history }) => {
               required
               fullWidth
               name='password'
+              InputLabelProps={{
+                style: { color: '#818181' },
+              }}
+              InputProps={{
+                className: classes.input,
+              }}
               label='Password'
               type='password'
               id='password'
