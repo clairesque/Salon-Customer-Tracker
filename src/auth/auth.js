@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     return (
       <Grid className={'centered'}>
         <FadeLoader
-          color={'#FF0000'}
+          color={'#0a1f4d'}
           height={15}
           width={5}
           radius={2}

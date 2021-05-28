@@ -7,7 +7,6 @@ import {
   XAxis,
   YAxis,
   Line,
-  // ResponsiveContainer, //was commented in the return
   ComposedChart,
   AreaChart,
   Bar,
