@@ -7,14 +7,14 @@ import { Clock, Calendar, SignOut, ChartBar, PlusCircle } from 'phosphor-react'
 import app from '../auth/config'
 import Typography from '@material-ui/core/Typography'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     position: 'fixed',
     bottom: 0,
+    backgroundColor: '#e9f2f9',
   },
-})
-
+}))
 
 export default function NavBar() {
   const classes = useStyles()
@@ -24,11 +24,10 @@ export default function NavBar() {
 
   React.useEffect(() => {
     setPath(window.location.pathname)
-  },[clicked]);
+  }, [clicked])
 
   const onButtonClicked = (id) => {
     clicked === id ? setClicked(null) : setClicked(id)
-    
   }
 
   return (
@@ -39,15 +38,14 @@ export default function NavBar() {
       }}
       showLabels
       className={classes.root}
-      style = {{backgroundColor: "#B8B8FF"}}
     >
       <BottomNavigationAction
-        className= {classes.dailyNav}
+        className={classes.dailyNav}
         label={
           <Typography
-            fontSize = {pathname == "/daily"? 15: 12}
-            color = {pathname == "/daily"? '#FFEEDD' : '#000000'}
-            >
+            fontSize={pathname == '/daily' ? 15 : 12}
+            color={pathname == '/daily' ? '#422eaa' : '#0a1f4d'}
+          >
             Daily
           </Typography>
         }
@@ -55,29 +53,27 @@ export default function NavBar() {
           <Clock
             size={30}
             weight='duotone'
-            color={pathname == "/daily"? '#FFEEDD' : '#000000'}
+            color={pathname == '/daily' ? '#422eaa' : '#0a1f4d'}
           />
         }
         component={Link}
         onClick={() => onButtonClicked(0)}
         to={'/daily'}
-        //if you want to change the bg of the selected item then try this (change the color btw)
-        // style = {{backgroundColor: "/daily"? '#000000' : '#B8B8FF'}} 
       />
       <BottomNavigationAction
         label={
           <Typography
-            fontSize = {pathname == "/monthly"? 15: 12}
-            color = {pathname == "/monthly"? '#FFEEDD' : '#000000'}
-            >
+            fontSize={pathname == '/monthly' ? 15 : 12}
+            color={pathname == '/monthly' ? '#422eaa' : '#0a1f4d'}
+          >
             Monthly
           </Typography>
-        }        
+        }
         icon={
           <Calendar
             size={30}
             weight='duotone'
-            color={pathname == "/monthly"? '#FFEEDD' : '#000000'}
+            color={pathname == '/monthly' ? '#422eaa' : '#0a1f4d'}
           />
         }
         onClick={() => onButtonClicked(1)}
@@ -87,17 +83,17 @@ export default function NavBar() {
       <BottomNavigationAction
         label={
           <Typography
-            fontSize = {pathname == "/add"? 15: 12}
-            color = {pathname == "/add"? '#FFEEDD' : '#000000'}
-            >
+            fontSize={pathname == '/add' ? 15 : 12}
+            color={pathname == '/add' ? '#422eaa' : '#0a1f4d'}
+          >
             Add
           </Typography>
         }
         icon={
           <PlusCircle
-          size={30}
-          weight='duotone'
-          color={pathname == "/add"? '#FFEEDD' : '#000000'}
+            size={30}
+            weight='duotone'
+            color={pathname == '/add' ? '#422eaa' : '#0a1f4d'}
           />
         }
         component={Link}
@@ -107,18 +103,18 @@ export default function NavBar() {
       <BottomNavigationAction
         label={
           <Typography
-            fontSize = {pathname == "/dashboard"? 15: 12}
-            color = {pathname == "/dashboard"? '#FFEEDD' : '#000000'}
-            >
+            fontSize={pathname == '/dashboard' ? 15 : 12}
+            color={pathname == '/dashboard' ? '#422eaa' : '#0a1f4d'}
+          >
             Dashboard
           </Typography>
         }
         icon={
           <ChartBar
-          size={30}
-          weight='duotone' 
-          color={pathname == "/dashboard"? '#FFEEDD' : '#000000'}
-        />
+            size={30}
+            weight='duotone'
+            color={pathname == '/dashboard' ? '#422eaa' : '#0a1f4d'}
+          />
         }
         onClick={() => onButtonClicked(3)}
         component={Link}
@@ -126,11 +122,11 @@ export default function NavBar() {
       />
       <BottomNavigationAction
         label={
-          <Typography color = "#880808" fontSize = {12}>
+          <Typography color='#0a1f4d' fontSize={12}>
             Logout
           </Typography>
         }
-        icon={<SignOut size={30} weight='duotone' color = "#880808"/>}
+        icon={<SignOut size={30} weight='duotone' color='#0a1f4d' />}
         onClick={() => app.auth().signOut()}
       />
     </BottomNavigation>

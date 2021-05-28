@@ -201,7 +201,7 @@ export default function User() {
 
   if (error) {
     return (
-      <Typography variant='h5' color='textPrimary' align='center'>
+      <Typography variant='h5' align='center'>
         Error: {error.message}
       </Typography>
     )
@@ -213,7 +213,6 @@ export default function User() {
           <Typography
             align='center'
             variant='h5'
-            color='textPrimary'
             className={classes.title}
           >
             Add Customer
@@ -245,7 +244,7 @@ export default function User() {
           <SubmitDialog />
         </Container>
       ) : (
-        <Typography className='centered' color='textPrimary'>
+        <Typography className='centered'>
           You do not have permissions to access this page.
         </Typography>
       ),

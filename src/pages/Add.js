@@ -124,7 +124,6 @@ const Add = () => {
     <Typography
         align='center'
         variant='h5'
-        color='textPrimary'
         className={classes.title}
         marginTop={2}
         >

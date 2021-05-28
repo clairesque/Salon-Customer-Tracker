@@ -8,11 +8,10 @@ import { AuthContext } from '../auth/auth'
 import { Typography, Container, TextField, Grid } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
-
   dgridStyle: {
     '& .dateHeader, & .paidHeader': {
-      backgroundColor: '#B8B8FF',
-      color: "black"
+      backgroundColor: '#0a1f4d',
+      color: '#FFF',
     },
   },
 
@@ -32,22 +31,46 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const columns = [
-  { field: 'date', headerName: 'Date', width: 200, headerClassName: 'dateHeader',
-  headerAlign: 'center', },
-  { field: 'paid', headerName: 'Paid', width: 150, headerClassName: 'paidHeader',
-  headerAlign: 'center', },
+  {
+    field: 'date',
+    headerName: 'Date',
+    width: 200,
+    headerClassName: 'dateHeader',
+    headerAlign: 'center',
+  },
+  {
+    field: 'paid',
+    headerName: 'Paid',
+    width: 150,
+    headerClassName: 'paidHeader',
+    headerAlign: 'center',
+  },
 ]
-const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
 var currmonth = (parseInt(new Date().getMonth()) + 1).toString()
 if (currmonth.length === 1) {
   currmonth = '0' + currmonth
 }
 
-var curryear = (new Date().getFullYear()).toString()
+var curryear = new Date().getFullYear().toString()
 let theUrl =
-      `${process.env.REACT_APP_BACKEND_URL}/Customers/monthly/` + currmonth+"-"+curryear
+  `${process.env.REACT_APP_BACKEND_URL}/Customers/monthly/` +
+  currmonth +
+  '-' +
+  curryear
 
 const MonthlyReport = () => {
   const [customers, setCustomers] = useState([{ item: null }])
@@ -87,21 +110,24 @@ const MonthlyReport = () => {
 
         setMonthlyTot(tot)
       })
-  },[url])
+  }, [url])
 
- const changeMonth = (date) => {
+  const changeMonth = (date) => {
     date = new Date(date)
     var selected = (parseInt(date.getMonth()) + 1).toString()
-    var selectedYear = (date.getFullYear()).toString()
+    var selectedYear = date.getFullYear().toString()
     if (selected.length === 1) {
       selected = '0' + selected
     }
-    let newUrl = `${process.env.REACT_APP_BACKEND_URL}/Customers/monthly/`+selected+"-"+selectedYear
-    componentDidMount(selectedYear,selected,newUrl)
+    let newUrl =
+      `${process.env.REACT_APP_BACKEND_URL}/Customers/monthly/` +
+      selected +
+      '-' +
+      selectedYear
+    componentDidMount(selectedYear, selected, newUrl)
   }
 
-  const componentDidMount = (year,month,newUrl) =>{
-    
+  const componentDidMount = (year, month, newUrl) => {
     setYear(year)
     setMonth(month)
     setUrl(newUrl)
@@ -111,13 +137,8 @@ const MonthlyReport = () => {
     <Container maxWidth='xs'>
       {currentUser.email.includes('admin') ? (
         <div style={{ height: 600, width: '100%' }}>
-          <Typography
-            align='center'
-            variant='h5'
-            color='textPrimary'
-            className={classes.title}
-          >
-            Monthly Report ({monthNames[parseInt(month-1)]}-{year})
+          <Typography align='center' variant='h5' className={classes.title}>
+            Monthly Report ({monthNames[parseInt(month - 1)]} {year})
           </Typography>
 
           <Grid className={classes.monthPicker}>
@@ -131,7 +152,7 @@ const MonthlyReport = () => {
                 onChange={(newValue) => {
                   setValue(newValue)
                   changeMonth(newValue)
-                }}                
+                }}
                 inputStyle={{ textAlign: 'center' }}
                 renderInput={(params) => (
                   <TextField
@@ -148,7 +169,7 @@ const MonthlyReport = () => {
           <div style={{ height: 550, width: '100%', margin: '10px auto' }}>
             {customers.item && (
               <DataGrid
-                className = {classes.dgridStyle}
+                className={classes.dgridStyle}
                 getRowId={(r) => r._id}
                 rows={customers.item}
                 columns={columns}
@@ -158,7 +179,7 @@ const MonthlyReport = () => {
           </div>
 
           <Grid className={`center ${classes.monthlyText}`}>
-            <Typography color='textPrimary'>
+            <Typography>
               <span style={{ fontWeight: 'bold' }}> Monthly: </span>{' '}
               {monthlyTot.toLocaleString('en-US', {
                 style: 'currency',
@@ -168,7 +189,7 @@ const MonthlyReport = () => {
           </Grid>
         </div>
       ) : (
-        <Typography className='centered' color='textPrimary'>
+        <Typography className='centered'>
           You do not have permissions to access this page.
         </Typography>
       )}

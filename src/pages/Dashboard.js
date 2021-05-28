@@ -78,7 +78,6 @@ const Dashboard = () => {
       <Typography
         align='center'
         variant='h5'
-        color='textPrimary'
         className={classes.title}
         marginTop = {2}
       >
@@ -123,7 +122,7 @@ const Dashboard = () => {
           <Area type='monotone' dataKey='paid' stroke='#8884d8' fill='#8884d8'/>
         </AreaChart>
         <Grid className={`center ${classes.totText}`}>
-          <Typography color='textPrimary'>
+          <Typography>
             <span style={{ fontWeight: 'bold' }}> Total Earnings: </span>{' '}
             {allTimeTot.toLocaleString('en-US', {
               style: 'currency',
